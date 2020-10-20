@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/mainpage.css') }}">
+        <script type=text/javascript src="{{url_for('static', filename='main.js')}}"></script>
+        <title>Control Lights</title>
+        <style>
+            body {
+                background-color: {{ color }};
+            }
+            .brightnessButton1 {
+                background-color: {{ brightnessButton1BackgroundColor }};
+            }
+            .brightnessButton2 {
+                background-color: {{ brightnessButton2BackgroundColor }};
+            }
+            .brightnessButton3 {
+                background-color: {{ brightnessButton3BackgroundColor }};
+            }
+            .brightnessButton4 {
+                background-color: {{ brightnessButton4BackgroundColor }};
+            }
+            .onButton {
+                background-color: {{ onButtonBackgroundColor }};
+            }
+            .offButton {
+                background-color: {{ offButtonBackgroundColor }};
+            }
+            .blindButton1 {
+                background-color: {{ blindButton1BackgroundColor }};
+            }
+            .blindButton2 {
+                background-color: {{ blindButton2BackgroundColor }};
+
+            }
+            .blindButton3 {
+                background-color: {{ blindButton3BackgroundColor }};
+            }
+            .blindButton4 {
+                background-color: {{ blindButton4BackgroundColor }};
+            }
+        </style>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <!-- <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+        <link rel="icon" href="/favicon.ico" type="image/x-icon"> -->
+    </head>
+
+    <body>
+    <span>
+        <h3>Main Lights</h3>
+        <div class="switch">
+            <form action="switch" method="POST">
+                <button class="bbbutton onButton" type="submit" name="lights" value="on">On</button>
+                <button class="bbbutton offButton" type="submit" name="lights" value="off">Off</button>
+            </form>
+        </div>
+    </span>
+    
+    <span id="color">
+        <h3>LED Light Strips</h3>
+        <p>Colors</p>
+        <div class="buttons">
+            <form action="button" method="POST">
+                <button class="button button1" onclick="setHex('#4CAF50')" type="submit" name="button" value="#4CAF50">Green</button>
+                <button class="button button2" onclick="setHex('#64b5ff')" type="submit" name="button" value="#64b5ff">Blue</button>
+                <button class="button button3" onclick="setHex('#f44336')" type="submit" name="button" value="#f44336">Red</button>
+                <br>
+                <button class="button button4" onclick="setHex('#8b54ff')" type="submit" name="button" value="#8b54ff">Purple</button>
+                <button class="button button5" onclick="setHex('#ffffff')" type="submit" name="button" value="#ffffff">White</button>
+                <button class="button button6" onclick="setHex('#ffa500')" type="submit" name="button" value="#ffa500">Orange</button>
+                <br>
+            </form>
+
+            <form action="brightness" method="POST">
+                <p>Brightness</p>
+                <button class="bbutton brightnessButton1" onclick="setBrightness(this.value)" type="submit" name="brightness" value="0">0%</button>
+                <button class="bbutton brightnessButton2" onclick="setBrightness(this.value)" type="submit" name="brightness" value="77">30%</button>
+                <button class="bbutton brightnessButton3" onclick="setBrightness(this.value)" type="submit" name="brightness" value="153">60%</button>
+                <button class="bbutton brightnessButton4" onclick="setBrightness(this.value)" type="submit" name="brightness" value="255">100%</button>
+            </form>
+        </div>
+
+        <span id="blinds">
+            <h3>Blinds</h3>
+            <div class="blinds">
+                <form action="blinds" method="POST">
+                    <button class="bbutton blindButton1" type="submit" name="blinds" value="0">0%</button>
+                    <button class="bbutton blindButton2" type="submit" name="blinds" value="30">30%</button>
+                    <button class="bbutton blindButton3" type="submit" name="blinds" value="60">60%</button>
+                    <button class="bbutton blindButton4" type="submit" name="blinds" value="100">100%</button>
+    
+                </form>
+            </div>
+        </span>
+
+        <button class="toggleButton" onclick="toggleSliders()">Toggle Sliders</button>
+        
+        <div id="sliders" style="display:none">
+            <div class="sliders">
+                <form action="effects" method="POST">
+                    <input type="submit" name="effect" value="fade">
+                    <input type="submit" name="effect" value="strobe">
+                    <input type="submit" name="effect" value="rgbFade">
+                    <input type="submit" name="effect" value="no effect">
+                </form>
+
+                <form method="POST" action="brightness">
+                    <p id="brightness">Brightness: {{ brightness }}</p>
+                    <div class="sliderWrapper">
+                        <input type="range" min="0" max="255" value="{{ brightness }}" name="brightness" oninput="setBrightness(this.value)"/>
+                    </div>
+                    
+                    <input type="submit" value="submit" />
+                </form>
+                
+                <form method="POST" action="sliders">
+                    <p id="r">Red: {{ r }}</p>
+                    <div class="sliderWrapper">
+                        <input type="range" min="0" max="255" value="{{ r }}" name="r" oninput="setRed(this.value)"/>
+                    </div>
+                    <p id="g">Green: {{ g }}</p>
+                    <div class="sliderWrapper">
+                        <input type="range"  min="0" max="255" value="{{ g }}" name="g" oninput="setGreen(this.value)"/>
+                    </div>
+                    <p id="b">Blue: {{ b }}</p>
+                    <div class="sliderWrapper">
+                        <input type="range"  min="0" max="255" value="{{ b }}" name="b" oninput="setBlue(this.value)"/>
+                    </div>
+                    <input type="submit" value="submit" />
+                </form>
+            </div>
+        </div>
+    
+        <p id="error"></p>
+    </span>
+    </body>
+
+
+</html>

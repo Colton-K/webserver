@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/mainpage.css') }}">
+        <script type=text/javascript src="{{url_for('static', filename='main.js')}}"></script>
+        <title>Control Lights</title>
+        <style>
+            body {
+                background-color: {{ color }};
+            }
+            .brightnessButton1 {
+                background-color: {{ brightnessButton1BackgroundColor }};
+            }
+            .brightnessButton2 {
+                background-color: {{ brightnessButton2BackgroundColor }};
+            }
+            .brightnessButton3 {
+                background-color: {{ brightnessButton3BackgroundColor }};
+            }
+            .brightnessButton4 {
+                background-color: {{ brightnessButton4BackgroundColor }};
+            }
+            .lightsOnButton {
+                background-color: {{ lightsOnButtonBackgroundColor }};
+            }
+            .lightsOffButton {
+                background-color: {{ lightsOffButtonBackgroundColor }};
+            }
+            .blindButton1 {
+                background-color: {{ blindButton1BackgroundColor }};
+            }
+            .blindButton2 {
+                background-color: {{ blindButton2BackgroundColor }};
+
+            }
+            .blindButton3 {
+                background-color: {{ blindButton3BackgroundColor }};
+            }
+            .blindButton4 {
+                background-color: {{ blindButton4BackgroundColor }};
+            }
+            .fanOnButton {
+                background-color: {{ fanOnButtonBackgroundColor }};
+            }
+            .fanOffButton {
+                background-color: {{ fanOffButtonBackgroundColor }};
+            }
+            .fan1OnButton {
+                background-color: {{ fan1OnButtonBackgroundColor }};
+            }
+            .fan1OffButton {
+                background-color: {{ fan1OffButtonBackgroundColor }};
+            }
+            .fan2OnButton {
+                background-color: {{ fan2OnButtonBackgroundColor }};
+            }
+            .fan2OffButton {
+                background-color: {{ fan2OffButtonBackgroundColor }};
+            }
+            .fan3OnButton {
+                background-color: {{ fan3OnButtonBackgroundColor }};
+            }
+            .fan3OffButton {
+                background-color: {{ fan3OffButtonBackgroundColor }};
+            }
+
+        </style>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <!-- <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+        <link rel="icon" href="/favicon.ico" type="image/x-icon"> -->
+    </head>
+
+    <body>
+    <span id="fanControl">
+        <h3>Fan Control</h3>
+        <div class="fans">
+            <form action="fans" method="POST">
+                <button class="bbbutton fanOnButton" type="submit" name="fans" value="on">All On</button>
+                <button class="bbbutton fanOffButton" type="submit" name="fans" value="off">All Off</button>
+            </form>
+        </div>
+        <div id="fans" style="display:inline">
+            <h5>Individual Fan Control</h5>
+            <form action="fan1" method="POST">
+                <button class="bbbutton fan1OnButton" type="submit" name="fan1" value="on">On</button>
+                <button class="bbbutton fan1OffButton" type="submit" name="fan1" value="off">Off</button>
+            </form>
+            <form action="fan2" method="POST">
+                <button class="bbbutton fan2OnButton" type="submit" name="fan2" value="on">On</button>
+                <button class="bbbutton fan2OffButton" type="submit" name="fan2" value="off">Off</button>
+            </form>
+            <form action="fan3" method="POST">
+                <button class="bbbutton fan3OnButton" type="submit" name="fan3" value="on">On</button>
+                <button class="bbbutton fan3OffButton" type="submit" name="fan3" value="off">Off</button>
+            </form>
+        </div>
+    </span>
+
+    <span id="color">
+        <h3>LED Light Strips</h3>
+        <p>Colors</p>
+        <div class="buttons">
+            <form action="button" method="POST">
+                <button class="button button1" onclick="setHex('#4CAF50')" type="submit" name="button" value="#00ff00">Green</button>
+                <button class="button button2" onclick="setHex('#64b5ff')" type="submit" name="button" value="#64b5ff">Blue</button>
+                <button class="button button3" onclick="setHex('#f44336')" type="submit" name="button" value="#ff0000">Red</button>
+                <br>
+                <button class="button button4" onclick="setHex('#8b54ff')" type="submit" name="button" value="#8b54ff">Purple</button>
+                <button class="button button5" onclick="setHex('#ffffff')" type="submit" name="button" value="#ffffff">White</button>
+                <button class="button button6" onclick="setHex('#ffa500')" type="submit" name="button" value="#ff3200">Orange</button>
+                <br>
+            </form>
+
+            <form action="brightness" method="POST">
+                <p>Brightness</p>
+                <button class="bbutton brightnessButton1" onclick="setBrightness(this.value)" type="submit" name="brightness" value="0">0%</button>
+                <button class="bbutton brightnessButton2" onclick="setBrightness(this.value)" type="submit" name="brightness" value="77">30%</button>
+                <button class="bbutton brightnessButton3" onclick="setBrightness(this.value)" type="submit" name="brightness" value="153">60%</button>
+                <button class="bbutton brightnessButton4" onclick="setBrightness(this.value)" type="submit" name="brightness" value="255">100%</button>
+            </form>
+        </div>
+
+        <!-- <span id="lights">
+            <h3>Main Lights</h3>
+            <div class="switch">
+                <form action="switch" method="POST">
+                    <button class="bbbutton lightsOnButton" type="submit" name="lights" value="on">On</button>
+                    <button class="bbbutton lightsOffButton" type="submit" name="lights" value="off">Off</button>
+                </form>
+            </div>
+        </span> -->
+
+        <!-- <span id="blinds">
+            <h3>Blinds</h3>
+            <div class="blinds">
+                <form action="blinds" method="POST">
+                    <button class="bbutton blindButton1" type="submit" name="blinds" value="0">0%</button>
+                    <button class="bbutton blindButton2" type="submit" name="blinds" value="30">30%</button>
+                    <button class="bbutton blindButton3" type="submit" name="blinds" value="60">60%</button>
+                    <button class="bbutton blindButton4" type="submit" name="blinds" value="100">100%</button>
+    
+                </form>
+            </div>
+        </span> -->
+
+        <button class="toggleButton" onclick="toggleSliders()">Toggle Sliders</button>
+        <!-- experimental -->
+        <div id="fantoggleswitches", style="display:none">
+            <form action="fan1toggle" method="POST">
+                <button class="toggleButton2 fan1OnButton" type="submit" name="fan1toggle" value="toggle">Fan 1</button>
+            </form>
+            <form action="fan2toggle" method="POST">
+                <button class="toggleButton2 fan2OnButton" type="submit" name="fan2toggle" value="toggle">Fan 2</button>
+            </form>
+            <form action="fan3toggle" method="POST">
+                <button class="toggleButton2 fan3OnButton" type="submit" name="fan3toggle" value="toggle">Fan 3</button>
+            </form>
+        </div>
+        
+
+        <div id="sliders" style="display:none">
+            <h5>RGB Control</h5>
+            <div class="sliders">
+                <form action="effects" method="POST">
+                    <input type="submit" name="effect" value="fade">
+                    <input type="submit" name="effect" value="strobe">
+                    <input type="submit" name="effect" value="rgbFade">
+                    <input type="submit" name="effect" value="noEffect">
+                </form>
+
+                <form method="POST" action="brightness">
+                    <p id="brightness">Brightness: {{ brightness }}</p>
+                    <div class="sliderWrapper">
+                        <input type="range" min="0" max="255" value="{{ brightness }}" name="brightness" oninput="setBrightness(this.value)"/>
+                    </div>
+                    
+                    <input type="submit" value="submit" />
+                </form>
+                
+                <form method="POST" action="sliders">
+                    <p id="r">Red: {{ r }}</p>
+                    <div class="sliderWrapper">
+                        <input type="range" min="0" max="255" value="{{ r }}" name="r" oninput="setRed(this.value)"/>
+                    </div>
+                    <p id="g">Green: {{ g }}</p>
+                    <div class="sliderWrapper">
+                        <input type="range"  min="0" max="255" value="{{ g }}" name="g" oninput="setGreen(this.value)"/>
+                    </div>
+                    <p id="b">Blue: {{ b }}</p>
+                    <div class="sliderWrapper">
+                        <input type="range"  min="0" max="255" value="{{ b }}" name="b" oninput="setBlue(this.value)"/>
+                    </div>
+                    <input type="submit" value="submit" />
+                </form>
+            </div>
+        </div>
+    
+        <p id="error"></p>
+    </span>
+    </body>
+
+
+</html>
