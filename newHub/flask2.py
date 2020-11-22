@@ -5,18 +5,22 @@ from time import sleep
 import socket
 import requests
 import datetime
+
 from smartFan import smartFan
+from rgbStrip import rgbStrip
 
 app = Flask(__name__)
 
+'''
 offColor = '#dcdcdc'
 onColor = '#ffffff'
 errorColor = '#ff4210'
+'''
 
 # vars
 overridePassword = True
 
-pwmFreq = 50
+#pwmFreq = 50
 oldRGB = [0,0,0,255] # last index is brightness
 
 # initialize fans
@@ -24,42 +28,18 @@ smartFans = []
 fanIPs = ['192.168.11.5', '192.168.11.6', '192.168.11.7']
 
 for fanIP in fanIPs:
-    smartFans.append(smartFan(fanIP, onColor, offColor, errorColor))
+    smartFans.append(smartFan(fanIP))
 
 
-'''
-blindButtonBackgroundColors = [onColor, offColor, offColor, offColor]
-'''
-onButtonBackgroundColor = offColor
-offButtonBackgroundColor = onColor
+rgbStrip1 = rgbStrip('192.168.11.72')
 
-brightnessButtonBackgroundColors = [offColor, offColor, offColor, onColor]
 
 serConnected = True
 password = 'asdf'
-fading = True
-rgbServer = '192.168.10.21'
-gammaCorrection = [
-    0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-    0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  1,  1,  1,  1,
-    1,  1,  1,  1,  1,  1,  1,  1,  1,  2,  2,  2,  2,  2,  2,  2,
-    2,  3,  3,  3,  3,  3,  3,  3,  4,  4,  4,  4,  4,  5,  5,  5,
-    5,  6,  6,  6,  6,  7,  7,  7,  7,  8,  8,  8,  9,  9,  9, 10,
-    10, 10, 11, 11, 11, 12, 12, 13, 13, 13, 14, 14, 15, 15, 16, 16,
-    17, 17, 18, 18, 19, 19, 20, 20, 21, 21, 22, 22, 23, 24, 24, 25,
-    25, 26, 27, 27, 28, 29, 29, 30, 31, 32, 32, 33, 34, 35, 35, 36,
-    37, 38, 39, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 50,
-    51, 52, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 66, 67, 68,
-    69, 70, 72, 73, 74, 75, 77, 78, 79, 81, 82, 83, 85, 86, 87, 89,
-    90, 92, 93, 95, 96, 98, 99,101,102,104,105,107,109,110,112,114,
-    115,117,119,120,122,124,126,127,129,131,133,135,137,138,140,142,
-    144,146,148,150,152,154,156,158,160,162,164,167,169,171,173,175,
-    177,180,182,184,186,189,191,193,196,198,200,203,205,208,210,213,
-    215,218,220,223,225,228,231,233,236,239,241,244,247,249,252,255
-]
 
 # files
 base = 'index.html'
+
 
 def getIP():
     s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
@@ -73,85 +53,6 @@ def getIP():
         s.close()
     return IP
 
-def RGBtoHex(r,g,b):
-    r = str(hex(r)[2:])
-    g = str(hex(g)[2:])
-    b = str(hex(b)[2:])
-
-    if len(r) == 1:
-        r = '0' + r
-
-    if len(g) == 1:
-        g = '0' + g
-
-    if len(b) == 1:
-        b = '0' + g
-    elif len(b) == 0:
-        print('b is')
-
-    return '#' + r + g + b
-
-def hextoRGB(hexString):
-    r = int(hexString[1:3], 16)
-    g = int(hexString[3:5], 16)
-    b = int(hexString[5:7], 16)
-    return(r,g,b)
-
-def setRGB(r,g,b,brightness): 
-
-    # write old values
-    oldRGB[0] = r
-    oldRGB[1] = g
-    oldRGB[2] = b
-    oldRGB[3] = brightness
-    
-    # set values
-    rgbStr = RGBtoHex(r,g,b)[1:]
-    # get ip
-    rgbIP = rgbServer
-    # send request to server
-    try:
-        req = requests.get('http://{}/rgb?hex={}&brightness={}'.format(rgbIP,rgbStr,brightness))
-    except:
-        print("Couldn't connect to {}".format(rgbIP))
-
-def setRGBGammaCorrected(r, g, b, brightness):
-    # write old values
-    oldRGB[0] = r
-    oldRGB[1] = g
-    oldRGB[2] = b
-    oldRGB[3] = brightness
-    
-    r = gammaCorrection[r]
-    g = gammaCorrection[g]
-    b = gammaCorrection[b]
-
-    # set values
-    rgbStr = RGBtoHex(r,g,b)[1:]
-    
-    # get ip
-    rgbIP = rgbServer
-    # send request to server
-    try:
-        req = requests.get('http://{}/rgb?hex={}&brightness={}'.format(rgbIP,rgbStr,brightness))
-    except:
-        print("Couldn't connect to {}".format(rgbIP))
-
-def setEffect(effect):
-    r = oldRGB[0]
-    g = oldRGB[1]
-    b = oldRGB[2]
-    brightness = oldRGB[3]
-
-    # get ip
-    rgbIP = rgbServer
-    # send request to server
-    try:
-        req = requests.get('http://{}/effect?effect={}'.format(rgbIP,effect))
-        print("Sending req: ", req)
-    except:
-        print("Couldn't connect to {}".format(rgbIP))
-    
 """
     Display home page
 """
@@ -165,9 +66,8 @@ def index():
     # global fan3OffButtonBackgroundColor
     # overrides password
     if overridePassword:
-        return render_template(base, r=oldRGB[0], g=oldRGB[1], b=oldRGB[2], brightness=oldRGB[3], color=RGBtoHex(oldRGB[0],oldRGB[1],oldRGB[2]), \
-        brightnessButton1BackgroundColor=brightnessButtonBackgroundColors[0], brightnessButton2BackgroundColor=brightnessButtonBackgroundColors[1], brightnessButton3BackgroundColor=brightnessButtonBackgroundColors[2], brightnessButton4BackgroundColor=brightnessButtonBackgroundColors[3], \
-        lightsOnButtonBackgroundColor=onButtonBackgroundColor, lightsOffButtonBackgroundColor=offButtonBackgroundColor, \
+        return render_template(base, r=rgbStrip1.getR(), g=rgbStrip1.getG(), b=rgbStrip1.getB(), brightness=rgbStrip1.getBrightness(), color=rgbStrip1.getHex(), \
+        brightnessButton1BackgroundColor=rgbStrip1.getBrightnessButtonColors()[0], brightnessButton2BackgroundColor=rgbStrip1.getBrightnessButtonColors()[1], brightnessButton3BackgroundColor=rgbStrip1.getBrightnessButtonColors()[2], brightnessButton4BackgroundColor=rgbStrip1.getBrightnessButtonColors()[3], \
         fan1OnButtonBackgroundColor=smartFans[0].getOnButtonColor(), fan1OffButtonBackgroundColor=smartFans[0].getOffButtonColor(), \
         fan2OnButtonBackgroundColor=smartFans[1].getOnButtonColor(), fan2OffButtonBackgroundColor=smartFans[1].getOffButtonColor(), \
         fan3OnButtonBackgroundColor=smartFans[2].getOnButtonColor(), fan3OffButtonBackgroundColor=smartFans[2].getOffButtonColor(), \
@@ -206,57 +106,34 @@ def logout():
 """
 @app.route("/sliders", methods=["POST"])
 def sliders():
-    brightness = oldRGB[3]
-
     # Get slider Values
     r = int(request.form["r"])
     g = int(request.form["g"])
     b = int(request.form["b"])
 
-    # print("Setting R: {} G: {} B: {} Brightness: {}".format(r,g,b, brightness))
-
-    # setRGB(r,g,b, brightness)
-    setRGBGammaCorrected(r,g,b, brightness)
+    rgbStrip1.setRGB(r, g, b)
 
     return index()
 
 @app.route("/button", methods=["POST"])
 def button():
     hexString = (request.form["button"])
-    r,g,b = hextoRGB(hexString)
-    brightness = oldRGB[3]
-    setRGB(r,g,b,brightness)
-    # setRGBGammaCorrected(r,g,b, brightness)
+    r,g,b = rgbStrip1.hextoRGB(hexString)
+    rgbStrip1.setRGB(r, g, b)
     
     return index()
 
 @app.route("/brightness", methods=["POST"])
 def brightness():
-    global brightnessButtonBackgroundColors
-
-    r,g,b = oldRGB[0],oldRGB[1],oldRGB[2]
     brightness = int(request.form["brightness"])
+    rgbStrip1.setBrightness(brightness)
     
-    brightnessButtonBackgroundColors = [offColor] * 4
-
-    if brightness == 0:
-        brightnessButtonBackgroundColors[0] = onColor 
-    elif brightness == 77:
-        brightnessButtonBackgroundColors[1] = onColor
-    elif brightness == 153:
-        brightnessButtonBackgroundColors[2] = onColor
-    elif brightness == 255:
-        brightnessButtonBackgroundColors[3] = onColor
-
-    setRGB(r,g,b,brightness)
-    # setRGBGammaCorrected(r,g,b, brightness)
-
     return index()
 
 @app.route("/effects", methods=["POST"])
 def effects():
     selectedEffect = (request.form["effect"])
-    setEffect(selectedEffect)
+    effect(selectedEffect)
 
     return index()
 
