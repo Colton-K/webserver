@@ -37,9 +37,9 @@ class rgbStrip:
     def __init__(self, ip, onColor='#ffffff', gammaCorrecting=True, offColor='#dcdcdc', errorColor='#ff4210'):
         self.ip = ip
 
-        self.r = 0
-        self.g = 0
-        self.b = 0
+        self.r = 255
+        self.g = 255
+        self.b = 255
         self.brightness = 0
 
     
