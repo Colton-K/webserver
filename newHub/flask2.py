@@ -246,7 +246,7 @@ def light1():
     if request.method == 'POST':
         status = request.form["light"]
     else:
-        status = request.args.get("status")
+        status = request.args.get("light")
     
     # update light
     smartLights[0].setStatus(status)
@@ -259,7 +259,7 @@ def light2():
     if request.method == 'POST':
         status = request.form["light"]
     else:
-        status = request.args.get("status")
+        status = request.args.get("light")
     
     # update light
     smartLights[1].setStatus(status)
@@ -272,7 +272,7 @@ def light3():
     if request.method == 'POST':
         status = request.form["light"]
     else:
-        status = request.args.get("status")
+        status = request.args.get("light")
     
     # update light
     smartLights[2].setStatus(status)

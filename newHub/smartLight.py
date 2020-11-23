@@ -19,6 +19,7 @@ class smartLight:
         self.status = status
         
         # control the switch
+        # print("status:", status)
         os.system("./tplink_smartplug.py -t {} -c {}".format(self.ip, self.status))
         
         # update color
