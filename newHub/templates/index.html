@@ -20,25 +20,6 @@
             .brightnessButton4 {
                 background-color: {{ brightnessButton4BackgroundColor }};
             }
-            .lightsOnButton {
-                background-color: {{ lightsOnButtonBackgroundColor }};
-            }
-            .lightsOffButton {
-                background-color: {{ lightsOffButtonBackgroundColor }};
-            }
-            .blindButton1 {
-                background-color: {{ blindButton1BackgroundColor }};
-            }
-            .blindButton2 {
-                background-color: {{ blindButton2BackgroundColor }};
-
-            }
-            .blindButton3 {
-                background-color: {{ blindButton3BackgroundColor }};
-            }
-            .blindButton4 {
-                background-color: {{ blindButton4BackgroundColor }};
-            }
             .fanOnButton {
                 background-color: {{ fanOnButtonBackgroundColor }};
             }
@@ -63,6 +44,30 @@
             .fan3OffButton {
                 background-color: {{ fan3OffButtonBackgroundColor }};
             }
+            .lightOnButton {
+                background-color: {{ lightOnButtonBackgroundColor }};
+            }
+            .lightOffButton {
+                background-color: {{ lightOffButtonBackgroundColor }};
+            }
+            .light1OnButton {
+                background-color: {{ light1OnButtonBackgroundColor }};
+            }
+            .light1OffButton {
+                background-color: {{ light1OffButtonBackgroundColor }};
+            }
+            .light2OnButton {
+                background-color: {{ light2OnButtonBackgroundColor }};
+            }
+            .light2OffButton {
+                background-color: {{ light2OffButtonBackgroundColor }};
+            }
+            .light3OnButton {
+                background-color: {{ light3OnButtonBackgroundColor }};
+            }
+            .light3OffButton {
+                background-color: {{ light3OffButtonBackgroundColor }};
+            }
 
         </style>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -71,6 +76,41 @@
     </head>
 
     <body>
+    
+    {% if numLights >= 1 %}
+    <span id="lightControl">
+        <h3>Light Control</h3>
+        <div class="lights">
+            <form action="lights" method="POST">
+                <button class="bbbutton lightOnButton" type="submit" name="lights" value="on">All On</button>
+                <button class="bbbutton lightOffButton" type="submit" name="lights" value="off">All Off</button>
+            </form>
+        </div>
+        <div id="lights"> 
+            <h4>Individual Light Control</h4>
+            <form action="light1" method="POST">
+                <button class="bbbutton light1OnButton" type="submit" name="light" value="on">On</button>
+                <button class="bbbutton light1OffButton" type="submit" name="light" value="off">Off</button>
+            </form>
+            {% if numLights >= 2 %}
+            <form action="light2" method="POST">
+                <button class="bbbutton light2OnButton" type="submit" name="light" value="on">On</button>
+                <button class="bbbutton light2OffButton" type="submit" name="light" value="off">Off</button>
+            </form>
+            {% endif %}
+            {% if numLights >= 3 %}
+            <form action="light3" method="POST">
+                <button class="bbbutton light3OnButton" type="submit" name="light" value="on">On</button>
+                <button class="bbbutton light3OffButton" type="submit" name="light" value="off">Off</button>
+            </form>
+            {% endif %}
+        </div>
+    </span>
+    {% endif %}
+
+
+
+    {% if numFans >= 1 %}
     <span id="fanControl">
         <h3>Fan Control</h3>
         <div class="fans">
@@ -78,24 +118,30 @@
                 <button class="bbbutton fanOnButton" type="submit" name="fans" value="on">All On</button>
                 <button class="bbbutton fanOffButton" type="submit" name="fans" value="off">All Off</button>
             </form>
+
         </div>
         <div id="fans" style="display:inline">
-            <h5>Individual Fan Control</h5>
+            <h4>Individual Fan Control</h4>
             <form action="fan1" method="POST">
                 <button class="bbbutton fan1OnButton" type="submit" name="fan" value="on">On</button>
                 <button class="bbbutton fan1OffButton" type="submit" name="fan" value="off">Off</button>
             </form>
+            {% if numFans >= 2 %}
             <form action="fan2" method="POST">
                 <button class="bbbutton fan2OnButton" type="submit" name="fan" value="on">On</button>
                 <button class="bbbutton fan2OffButton" type="submit" name="fan" value="off">Off</button>
             </form>
+            {% endif %}
+            {% if numFans >= 3 %}
             <form action="fan3" method="POST">
                 <button class="bbbutton fan3OnButton" type="submit" name="fan" value="on">On</button>
                 <button class="bbbutton fan3OffButton" type="submit" name="fan" value="off">Off</button>
             </form>
+            {% endif %}
         </div>
     </span>
-
+    {% endif %}
+    
     <span id="color">
         <h3>LED Light Strips</h3>
         <p>Colors</p>

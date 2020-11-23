@@ -8,38 +8,29 @@ import datetime
 
 from smartFan import smartFan
 from rgbStrip import rgbStrip
+from smartLight import smartLight
 
 app = Flask(__name__)
 
-'''
-offColor = '#dcdcdc'
-onColor = '#ffffff'
-errorColor = '#ff4210'
-'''
-
-# vars
-overridePassword = True
-
-#pwmFreq = 50
-oldRGB = [0,0,0,255] # last index is brightness
-
 # initialize fans
 smartFans = []
-fanIPs = ['192.168.11.5', '192.168.11.6', '192.168.11.7']
-
+fanIPs = []#fanIPs = ['192.168.11.5', '192.168.11.6', '192.168.11.7']
 for fanIP in fanIPs:
     smartFans.append(smartFan(fanIP))
 
-
+# init rgbStrip
 rgbStrip1 = rgbStrip('192.168.11.72')
 
+# initialize smart lights
+smartLights = []
+lightIPs = ['192.168.11.5', '192.168.11.6', '192.168.11.7']
+for lightIP in lightIPs:
+    smartLights.append(smartLight(lightIP))
 
 serConnected = True
-password = 'asdf'
 
 # files
 base = 'index.html'
-
 
 def getIP():
     s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
@@ -58,34 +49,31 @@ def getIP():
 """
 @app.route("/")
 def index():
-    # global fan1OnButtonBackgroundColor
-    # global fan1OffButtonBackgroundColor
-    # global fan2OnButtonBackgroundColor
-    # global fan2OffButtonBackgroundColor
-    # global fan3OnButtonBackgroundColor
-    # global fan3OffButtonBackgroundColor
-    # overrides password
-    if overridePassword:
-        return render_template(base, r=rgbStrip1.getR(), g=rgbStrip1.getG(), b=rgbStrip1.getB(), brightness=rgbStrip1.getBrightness(), color=rgbStrip1.getHex(), \
-        brightnessButton1BackgroundColor=rgbStrip1.getBrightnessButtonColors()[0], brightnessButton2BackgroundColor=rgbStrip1.getBrightnessButtonColors()[1], brightnessButton3BackgroundColor=rgbStrip1.getBrightnessButtonColors()[2], brightnessButton4BackgroundColor=rgbStrip1.getBrightnessButtonColors()[3], \
-        fan1OnButtonBackgroundColor=smartFans[0].getOnButtonColor(), fan1OffButtonBackgroundColor=smartFans[0].getOffButtonColor(), \
-        fan2OnButtonBackgroundColor=smartFans[1].getOnButtonColor(), fan2OffButtonBackgroundColor=smartFans[1].getOffButtonColor(), \
-        fan3OnButtonBackgroundColor=smartFans[2].getOnButtonColor(), fan3OffButtonBackgroundColor=smartFans[2].getOffButtonColor(), \
-        #blindButton1BackgroundColor=blindButtonBackgroundColors[0], blindButton2BackgroundColor=blindButtonBackgroundColors[1], blindButton3BackgroundColor=blindButtonBackgroundColors[2], blindButton4BackgroundColor=blindButtonBackgroundColors[3], \
-        )
+    # make sure not getting any out of bounds errors
+    fanOnColors = [""] * 3
+    fanOffColors = [""] * 3
+    for i in range(0, len(smartFans)):
+        fanOnColors[i] = smartFans[i].getOnButtonColor()
+        fanOffColors[i] = smartFans[i].getOffButtonColor()
+    
+    lightOnColors = [""] * 3
+    lightOffColors = [""] * 3
+    for i in range(0, len(smartLights)):
+        lightOnColors[i] = smartLights[i].getOnButtonColor()
+        lightOffColors[i] = smartLights[i].getOffButtonColor()
 
-    if not session.get('logged_in'):
-        return render_template('login.html')
-    else:
-        return render_template(base, r=oldRGB[0], g=oldRGB[1], b=oldRGB[2], brightness=oldRGB[3], color=RGBtoHex(oldRGB[0],oldRGB[1],oldRGB[2]), \
-        brightnessButton1BackgroundColor=brightnessButtonBackgroundColors[0], brightnessButton2BackgroundColor=brightnessButtonBackgroundColors[1], brightnessButton3BackgroundColor=brightnessButtonBackgroundColors[2], brightnessButton4BackgroundColor=brightnessButtonBackgroundColors[3], \
-        lightsOnButtonBackgroundColor=onButtonBackgroundColor, lightsOffButtonBackgroundColor=offButtonBackgroundColor, \
-        fan1OnButtonBackgroundColor=fan1OnButtonBackgroundColor, fan1OffButtonBackgroundColor=fan1OffButtonBackgroundColor, \
-        fan2OnButtonBackgroundColor=fan2OnButtonBackgroundColor, fan2OffButtonBackgroundColor=fan2OffButtonBackgroundColor, \
-        fan3OnButtonBackgroundColor=fan3OnButtonBackgroundColor, fan3OffButtonBackgroundColor=fan3OffButtonBackgroundColor, \
-        blindButton1BackgroundColor=blindButtonBackgroundColors[0], blindButton2BackgroundColor=blindButtonBackgroundColors[1], blindButton3BackgroundColor=blindButtonBackgroundColors[2], blindButton4BackgroundColor=blindButtonBackgroundColors[3], \
-        )
-
+    return render_template(base, r=rgbStrip1.getR(), g=rgbStrip1.getG(), b=rgbStrip1.getB(), brightness=rgbStrip1.getBrightness(), color=rgbStrip1.getHex(), \
+    brightnessButton1BackgroundColor=rgbStrip1.getBrightnessButtonColors()[0], brightnessButton2BackgroundColor=rgbStrip1.getBrightnessButtonColors()[1], brightnessButton3BackgroundColor=rgbStrip1.getBrightnessButtonColors()[2], brightnessButton4BackgroundColor=rgbStrip1.getBrightnessButtonColors()[3], \
+    numFans=len(smartFans), \
+    fan1OnButtonBackgroundColor=fanOnColors[0], fan1OffButtonBackgroundColor=fanOffColors[0], \
+    fan2OnButtonBackgroundColor=fanOnColors[1], fan2OffButtonBackgroundColor=fanOffColors[1], \
+    fan3OnButtonBackgroundColor=fanOnColors[2], fan3OffButtonBackgroundColor=fanOffColors[2], \
+    numLights=len(smartLights), \
+    light1OnButtonBackgroundColor=lightOnColors[0], light1OffButtonBackgroundColor=lightOffColors[0], \
+    light2OnButtonBackgroundColor=lightOnColors[1], light2OffButtonBackgroundColor=lightOffColors[1], \
+    light3OnButtonBackgroundColor=lightOnColors[2], light3OffButtonBackgroundColor=lightOffColors[2], \
+    )
+    
 @app.route('/login', methods=['POST'])
 def login():
     if request.form['password'] == password:
@@ -136,91 +124,6 @@ def effects():
     effect(selectedEffect)
 
     return index()
-
-"""
-    SWITCH SUBSYSTEM
-"""
-# @app.route("/switch", methods=["GET","POST"])
-# def switch():
-#     global onButtonBackgroundColor
-#     global offButtonBackgroundColor
-
-#     if test:
-#         lightSwitchIP = testIP
-#     else:
-#         lightSwitchIP = 'thinkSwitch'
-
-#     if request.method == 'POST':
-#         status = request.form["lights"]
-#     else:
-#         status = request.args.get("lights")
-    
-#     if status == 'on':
-#         try:
-#             req = requests.get('http://{}/switch?lights=on'.format(lightSwitchIP))
-#             onButtonBackgroundColor = onColor
-#             offButtonBackgroundColor = offColor
-#         except:
-#             print("Couldn't connect to {}".format(lightSwitchIP))
-#             onButtonBackgroundColor = errorColor
-#             offButtonBackgroundColor = offColor
-#     else:
-#         try:
-#             req = requests.get('http://{}/switch?lights=off'.format(lightSwitchIP))
-#             onButtonBackgroundColor = offColor
-#             offButtonBackgroundColor = onColor
-#         except:
-#             print("Couldn't connect to {}".format(lightSwitchIP))
-#             onButtonBackgroundColor = offColor
-#             offButtonBackgroundColor = errorColor
-
-#     return index()
-
-"""
-    BLINDS SUBSYSTEM
-"""
-# @app.route("/blinds", methods=["POST"])
-# def blinds():
-#     global blindButtonBackgroundColors
-
-#     if test:
-#         blindsIP = testIP
-#     else:
-#         blindsIP = '192.168.1.117:80'
-
-#     openPercent = int(request.form["blinds"])
-#     blindButtonBackgroundColors = [offColor] * 4 
-    
-#     if openPercent == 0:
-#         try:
-#             blindButtonBackgroundColors[0] = onColor
-#             req = requests.get('http://{}/blinds?height=1'.format(blindsIP))
-#         except:
-#             print("Couldn't connect to {}".format(blindsIP))
-#             blindButtonBackgroundColors[0] = errorColor
-#     elif openPercent == 30:
-#         try:
-#             blindButtonBackgroundColors[1] = onColor
-#             req = requests.get('http://{}/blinds?height=2'.format(blindsIP))
-#         except:
-#             print("Couldn't connect to {}".format(blindsIP))
-#             blindButtonBackgroundColors[1] = errorColor
-#     elif openPercent == 60:
-#         try:
-#             blindButtonBackgroundColors[2] = onColor
-#             req = requests.get('http://{}/blinds?height=3'.format(blindsIP))
-#         except:
-#             print("Couldn't connect to {}".format(blindsIP))
-#             blindButtonBackgroundColors[2] = errorColor
-#     elif openPercent == 100:
-#         try:
-#             blindButtonBackgroundColors[3] = onColor
-#             req = requests.get('http://{}/blinds?height=4'.format(blindsIP))
-#         except:
-#             print("Couldn't connect to {}".format(blindsIP))
-#             blindButtonBackgroundColors[3] = errorColor
-
-#     return index()
 
 """
     Fans subsystem
@@ -300,6 +203,84 @@ def fan3():
     return index()
 
 """
+    Light subsystem
+"""
+@app.route("/lights", methods=["POST"])
+def lights():
+    status = request.form["lights"]
+
+    for light in smartLights:
+        #change status of light
+        light.setStatus(status)
+
+    return index()
+    
+
+# toggle switches
+def handleToggle(lightIndex):
+    smartLights[lightIndex].invertStatus()
+
+
+@app.route("/light1toggle", methods=["GET", "POST"])
+def light1toggle():
+    smartLights[0].invertStatus()
+
+    return index()
+
+@app.route("/light2toggle", methods=["POST"])
+def light2toggle():
+    smartLights[1].invertStatus()
+
+    return index()
+
+@app.route("/light3toggle", methods=["POST"])
+def light3toggle():
+    smartFans[2].invertStatus()
+
+    return index()
+
+# bottom on/off switches
+@app.route("/light1", methods=["GET", "POST"])
+def light1():
+    # get status
+    if request.method == 'POST':
+        status = request.form["light"]
+    else:
+        status = request.args.get("status")
+    
+    # update light
+    smartLights[0].setStatus(status)
+    
+    return index()
+
+@app.route("/light2", methods=["GET", "POST"])
+def light2():
+    # get status
+    if request.method == 'POST':
+        status = request.form["light"]
+    else:
+        status = request.args.get("status")
+    
+    # update light
+    smartLights[1].setStatus(status)
+   
+    return index()
+
+@app.route("/light3", methods=["GET", "POST"])
+def light3():
+    # get status
+    if request.method == 'POST':
+        status = request.form["light"]
+    else:
+        status = request.args.get("status")
+    
+    # update light
+    smartLights[2].setStatus(status)
+    
+    return index()
+
+
+"""
     Record temperature
 """
 @app.route("/temp", methods=["GET"])
@@ -313,15 +294,28 @@ def temp():
 
     return index()
 
+"""
+    Automation
+"""
+@app.route("/automation", methods=["GET"])
+def automation():
+    acceptableArgs = ["enableAutomation", "treeLight"]
+
+    # get request args and assign to variables
+    for arg in request.args:
+        if arg in acceptableArgs:
+            arg = request.args.get(arg)
+
+    # make changes if enabled 
+    if enableAutomation:
+        print("automation is enabled")
+
 
 """
     Runs app
 """
 if __name__ == "__main__":
     app.secret_key = os.urandom(12)
-    
-    # on dev device
-    # app.run()
     
     # on pi
     app.run(host=getIP(), port=80)
