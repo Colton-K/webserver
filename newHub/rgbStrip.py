@@ -84,7 +84,7 @@ class rgbStrip:
             tmpr = gammaCorrection[r]
             tmpg = gammaCorrection[g]
             tmpb = gammaCorrection[b]
-        
+
         rgbStr = self.RGBtoHex(tmpr, tmpg, tmpb)[1:]
 
         try:
@@ -109,9 +109,7 @@ class rgbStrip:
             print("Couldn't connect to {}".format(self.ip))
             # set buttons to be error colored    
             self.rgbServerConnected = False
-            self.brightnessButtonBgColors = [errorColor] * 4
-            
-            print(self.brightnessButtonBgColors)
+            self.brightnessButtonBgColors = [self.errorColor] * 4
 
     def setBrightness(self, brightness):
         self.setRGBB(self.r, self.g, self.b, brightness)
@@ -120,16 +118,16 @@ class rgbStrip:
         self.setRGBB(r, g, b, self.brightness)
 
     def setEffect(self, effect):
-        
+        effectNum = effectsDict['effect']
 
         try:
-            req = requests.get('http://{}/effect?effect={}'.format(self.ip, effect))
+            req = requests.get('http://{}/effect?effect={}'.format(self.ip, effectNum))
 
             self.rgbServerConnected = True
-        except: 
+        except:
             self.rgbServerConnected = False
             print("Couldn't connect to {}".format(self.ip))
-    
+
     def getR(self):
         return self.r
 
