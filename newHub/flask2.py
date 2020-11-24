@@ -14,12 +14,12 @@ app = Flask(__name__)
 
 # initialize fans
 smartFans = []
-fanIPs = []#fanIPs = ['192.168.11.5', '192.168.11.6', '192.168.11.7']
+fanIPs = []
 for fanIP in fanIPs:
     smartFans.append(smartFan(fanIP))
 
 # init rgbStrip
-rgbStrip1 = rgbStrip('192.168.11.72')
+rgbStrip1 = rgbStrip('192.168.11.73')
 
 # initialize smart lights
 smartLights = []
@@ -118,10 +118,14 @@ def brightness():
     
     return index()
 
-@app.route("/effects", methods=["POST"])
+@app.route("/effects", methods=["POST", "GET"])
 def effects():
-    selectedEffect = (request.form["effect"])
-    effect(selectedEffect)
+    if request.method == 'POST':
+        selectedEffect = (request.form["effect"])
+    else:
+        selectedEffect = request.args.get("effect")
+    
+    rgbStrip1.setEffect(selectedEffect)
 
     return index()
 

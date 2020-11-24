@@ -80,15 +80,19 @@ class rgbStrip:
         return r, g, b
 
     def setRGBB(self, r, g, b, brightness):
+        tmpr = int(r * brightness / 255.0)
+        tmpg = int(g * brightness / 255.0)
+        tmpb = int(b * brightness / 255.0)
+
         if self.gammaCorrecting:
-            tmpr = gammaCorrection[r]
-            tmpg = gammaCorrection[g]
-            tmpb = gammaCorrection[b]
+            tmpr = gammaCorrection[tmpr]
+            tmpg = gammaCorrection[tmpg]
+            tmpb = gammaCorrection[tmpb]
 
         rgbStr = self.RGBtoHex(tmpr, tmpg, tmpb)[1:]
 
         try:
-            req = requests.get('http://{}/rgb?hex={}&brightness={}'.format(self.ip,rgbStr,self.brightness))
+            req = requests.get('http://{}/rgb?r={}&g={}&b={}&brightness={}'.format(self.ip,tmpr,tmpg,tmpb,brightness))
             # update vars if successful
             self.r = r
             self.g = g
@@ -118,7 +122,7 @@ class rgbStrip:
         self.setRGBB(r, g, b, self.brightness)
 
     def setEffect(self, effect):
-        effectNum = effectsDict['effect']
+        effectNum = effectsDict[effect]
 
         try:
             req = requests.get('http://{}/effect?effect={}'.format(self.ip, effectNum))
