@@ -173,7 +173,7 @@ def fan1():
     if request.method == 'POST':
         status = request.form["fan"]
     else:
-        status = request.args.get("status")
+        status = request.args.get("fan")
     
     # update fan
     smartFans[0].setStatus(status)
@@ -186,7 +186,7 @@ def fan2():
     if request.method == 'POST':
         status = request.form["fan"]
     else:
-        status = request.args.get("status")
+        status = request.args.get("fan")
     
     # update fan
     smartFans[1].setStatus(status)
@@ -199,7 +199,7 @@ def fan3():
     if request.method == 'POST':
         status = request.form["fan"]
     else:
-        status = request.args.get("status")
+        status = request.args.get("fan")
     
     # update fan
     smartFans[2].setStatus(status)
