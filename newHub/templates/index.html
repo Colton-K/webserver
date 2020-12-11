@@ -68,6 +68,18 @@
             .light3OffButton {
                 background-color: {{ light3OffButtonBackgroundColor }};
             }
+            .ls1OnBgColor {
+                background-color: {{ ls1OnBgColor }};
+            }
+            .ls1OffBgColor {
+                background-color: {{ ls1OffBgColor }};
+            }
+            .ls2OnBgColor {
+                background-color: {{ ls2OnBgColor }};
+            }
+            .ls2OffBgColor {
+                background-color: {{ ls2OffBgColor }};
+            }
 
         </style>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -77,9 +89,40 @@
 
     <body>
     
+    {% if numSwitches >= 1 %}
+    <span id="switchControl">
+        <h3>Lightswitch Control</h3>
+        <div class="switches">
+            <form action="switches" method="POST">
+                <button class="bbbutton lsOnButton" type="submit" name="lights" value="on">All On</button>
+                <button class="bbbutton lsOffButton" type="submit" name="lights" value="off">All Off</button>
+            </form>
+        </div>
+
+        {% if numSwitches > 1 %}
+        <div id="switches">
+            <form action="switch1" method="POST">
+                <button class="bbbutton lsOnButton" type="submit" name="lights" value="on">On</button>
+                <button class="bbbutton lsOffButton" type="submit" name="lights" value="off">Off</button>
+            </form>
+            <form action="switch1" method="POST">
+                <button class="bbbutton ls1OnBgColor" type="submit" name="lights" value="on">On</button>
+                <button class="bbbutton ls1OffBgColor" type="submit" name="lights" value="off">Off</button>
+            </form>
+            <form action="switch1" method="POST">
+                <button class="bbbutton ls2OnBgColor" type="submit" name="lights" value="on">On</button>
+                <button class="bbbutton ls2OffBgColor" type="submit" name="lights" value="off">Off</button>
+            </form>
+        </div>
+        {% endif %}
+
+    </span>
+    {% endif %}
+
+
     {% if numLights >= 1 %}
     <span id="lightControl">
-        <h3>Light Control</h3>
+        <h3>Lamp Control</h3>
         <div class="lights">
             <form action="lights" method="POST">
                 <button class="bbbutton lightOnButton" type="submit" name="lights" value="on">All On</button>
@@ -87,7 +130,7 @@
             </form>
         </div>
         <div id="lights"> 
-            <h4>Individual Light Control</h4>
+            <h4>Individual Lamp Control</h4>
             <form action="light1" method="POST">
                 <button class="bbbutton light1OnButton" type="submit" name="light" value="on">On</button>
                 <button class="bbbutton light1OffButton" type="submit" name="light" value="off">Off</button>
@@ -191,18 +234,6 @@
 
         <button class="toggleButton" onclick="toggleSliders()">Toggle Sliders</button>
         <!-- experimental -->
-        <div id="fantoggleswitches", style="display:none">
-            <form action="fan1toggle" method="POST">
-                <button class="toggleButton2 fan1OnButton" type="submit" name="fan1toggle" value="toggle">Fan 1</button>
-            </form>
-            <form action="fan2toggle" method="POST">
-                <button class="toggleButton2 fan2OnButton" type="submit" name="fan2toggle" value="toggle">Fan 2</button>
-            </form>
-            <form action="fan3toggle" method="POST">
-                <button class="toggleButton2 fan3OnButton" type="submit" name="fan3toggle" value="toggle">Fan 3</button>
-            </form>
-        </div>
-        
 
         <div id="sliders" style="display:none">
             <h5>RGB Control</h5>

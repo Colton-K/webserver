@@ -9,6 +9,7 @@ import datetime
 from smartFan import smartFan
 from rgbStrip import rgbStrip
 from smartLight import smartLight
+from lightswitch import lightswitch
 
 app = Flask(__name__)
 
@@ -27,7 +28,12 @@ lightIPs = ['192.168.11.5', '192.168.11.6', '192.168.11.7']
 for lightIP in lightIPs:
     smartLights.append(smartLight(lightIP))
 
-serConnected = True
+# init lightswitches for old fashioned lights
+lightswitches = []
+lightswitchIPs = ['192.168.11.5']
+for lightswitchIP in lightswitchIPs:
+    lightswitches.append(lightswitch(lightswitchIP))
+
 
 # files
 base = 'index.html'
@@ -62,6 +68,11 @@ def index():
         lightOnColors[i] = smartLights[i].getOnButtonColor()
         lightOffColors[i] = smartLights[i].getOffButtonColor()
 
+    lightswitchOnColors = [""] * 2
+    lightswitchOffColors = [""] * 2
+    for i in range(0, len(lightswitches)):
+         lightswitchOnColors[i] = lightswitches[i].getOnButtonColor()    
+
     return render_template(base, r=rgbStrip1.getR(), g=rgbStrip1.getG(), b=rgbStrip1.getB(), brightness=rgbStrip1.getBrightness(), color=rgbStrip1.getHex(), \
     brightnessButton1BackgroundColor=rgbStrip1.getBrightnessButtonColors()[0], brightnessButton2BackgroundColor=rgbStrip1.getBrightnessButtonColors()[1], brightnessButton3BackgroundColor=rgbStrip1.getBrightnessButtonColors()[2], brightnessButton4BackgroundColor=rgbStrip1.getBrightnessButtonColors()[3], \
     numFans=len(smartFans), \
@@ -72,6 +83,9 @@ def index():
     light1OnButtonBackgroundColor=lightOnColors[0], light1OffButtonBackgroundColor=lightOffColors[0], \
     light2OnButtonBackgroundColor=lightOnColors[1], light2OffButtonBackgroundColor=lightOffColors[1], \
     light3OnButtonBackgroundColor=lightOnColors[2], light3OffButtonBackgroundColor=lightOffColors[2], \
+    numSwitches=len(lightswitches), \
+    ls1OnBgColor=lightswitchOnColors[0], ls1OffBgColor=lightswitchOffColors[0], \
+    ls2OnBgColor=lightswitchOnColors[1], ls2OffBgColor=lightswitchOffColors[1], \
     )
     
 @app.route('/login', methods=['POST'])
