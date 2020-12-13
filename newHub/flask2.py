@@ -30,7 +30,7 @@ for lightIP in lightIPs:
 
 # init lightswitches for old fashioned lights
 lightswitches = []
-lightswitchIPs = ['192.168.11.5']
+lightswitchIPs = []#['192.168.11.5, 192.168.11.7']
 for lightswitchIP in lightswitchIPs:
     lightswitches.append(lightswitch(lightswitchIP))
 
@@ -156,12 +156,6 @@ def fans():
 
     return index()
     
-
-# toggle switches
-def handleToggle(fanIndex):
-    smartFans[fanIndex].invertStatus()
-
-
 @app.route("/fan1toggle", methods=["GET", "POST"])
 def fan1toggle():
     smartFans[0].invertStatus()
@@ -233,12 +227,6 @@ def lights():
 
     return index()
     
-
-# toggle switches
-def handleToggle(lightIndex):
-    smartLights[lightIndex].invertStatus()
-
-
 @app.route("/light1toggle", methods=["GET", "POST"])
 def light1toggle():
     smartLights[0].invertStatus()
@@ -297,6 +285,38 @@ def light3():
     
     return index()
 
+@app.route("/switches", methods=["GET", "POST"])
+def switches():
+    # get status
+    if request.method == 'POST':
+        status = request.form["light"]
+    else:
+        status = request.args.get("light")
+    
+    for switch in lightswitches:
+        switch.setStatus(status)
+
+    return index()
+
+@app.route("/switch1", methods=["GET", "POST"])
+def switch1():
+    # get status
+    if request.method == 'POST':
+        status = request.form["light"]
+    else:
+        status = request.args.get("light")
+    
+    lightswitches[0].setStatus(status)
+
+@app.route("/switch2", methods=["GET", "POST"])
+def switch2():
+    # get status
+    if request.method == 'POST':
+        status = request.form["light"]
+    else:
+        status = request.args.get("light")
+    
+    lightswitches[1].setStatus(status)
 
 """
     Record temperature

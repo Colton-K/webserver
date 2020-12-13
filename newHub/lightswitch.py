@@ -2,7 +2,7 @@ class lightswitch:
     def __init__(self, ip, selectedBgColor='#ffffff', deselectedBgColor='#dcdcdc', errorColor='#ff4210'):
         self.ip = ip
 
-        self.selectedBgColorColor = selectedBgColor
+        self.selectedBgColor = selectedBgColor
         self.deselectedBgColor = deselectedBgColor
         self.errorColor = errorColor
 
@@ -29,11 +29,11 @@ class lightswitch:
             self.offButtonColor = self.errorColor
 
         if status == 'on':
-            self.onButtonColor = selectedColor
-            self.offButtonColor = deselectedColor
+            self.onButtonColor = self.selectedBgColor
+            self.offButtonColor = self.deselectedBgColor
         else:
-            self.onButtonColor = deselectedColor
-            self.offButtonColor = selectedColor
+            self.onButtonColor = self.deselectedBgColor
+            self.offButtonColor = self.selectedBgColor
 
     def getOnButtonColor(self):
         return self.onButtonColor

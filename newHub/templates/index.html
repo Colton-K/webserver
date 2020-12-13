@@ -94,24 +94,20 @@
         <h3>Lightswitch Control</h3>
         <div class="switches">
             <form action="switches" method="POST">
-                <button class="bbbutton lsOnButton" type="submit" name="lights" value="on">All On</button>
-                <button class="bbbutton lsOffButton" type="submit" name="lights" value="off">All Off</button>
+                <button class="bbbutton lsOnButton" type="submit" name="light" value="on">All On</button>
+                <button class="bbbutton lsOffButton" type="submit" name="light" value="off">All Off</button>
             </form>
         </div>
 
         {% if numSwitches > 1 %}
         <div id="switches">
             <form action="switch1" method="POST">
-                <button class="bbbutton lsOnButton" type="submit" name="lights" value="on">On</button>
-                <button class="bbbutton lsOffButton" type="submit" name="lights" value="off">Off</button>
+                <button class="bbbutton ls1OnBgColor" type="submit" name="light" value="on">On</button>
+                <button class="bbbutton ls1OffBgColor" type="submit" name="light" value="off">Off</button>
             </form>
-            <form action="switch1" method="POST">
-                <button class="bbbutton ls1OnBgColor" type="submit" name="lights" value="on">On</button>
-                <button class="bbbutton ls1OffBgColor" type="submit" name="lights" value="off">Off</button>
-            </form>
-            <form action="switch1" method="POST">
-                <button class="bbbutton ls2OnBgColor" type="submit" name="lights" value="on">On</button>
-                <button class="bbbutton ls2OffBgColor" type="submit" name="lights" value="off">Off</button>
+            <form action="switch2" method="POST">
+                <button class="bbbutton ls2OnBgColor" type="submit" name="light" value="on">On</button>
+                <button class="bbbutton ls2OffBgColor" type="submit" name="light" value="off">Off</button>
             </form>
         </div>
         {% endif %}
