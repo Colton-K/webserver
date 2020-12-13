@@ -14,6 +14,19 @@ class lightswitch:
 
     def setStatus(self, status):
         self.status = status
+        
+        if status == 'on':
+            binStatus = 1
+        else:
+            binStatus = 0
+    
+        try:
+            req = requests.get('httpL//{}/switch?light={}'.format(self.ip, binStatus))
+        except:
+            print("Couldn't connect to {}".format(self.ip))
+
+            self.onButtonColor = self.errorColor
+            self.offButtonColor = self.errorColor
 
         if status == 'on':
             self.onButtonColor = selectedColor
