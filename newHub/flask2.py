@@ -24,7 +24,7 @@ rgbStrip1 = rgbStrip('192.168.11.73')
 
 # initialize smart lights
 smartLights = []
-lightIPs = ['192.168.11.5', '192.168.11.6', '192.168.11.7']
+lightIPs = ['192.168.11.6', '192.168.11.7'] # 192.168.11.5
 for lightIP in lightIPs:
     smartLights.append(smartLight(lightIP))
 
