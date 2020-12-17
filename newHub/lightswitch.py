@@ -1,3 +1,5 @@
+import requests
+
 class lightswitch:
     def __init__(self, ip, selectedBgColor='#ffffff', deselectedBgColor='#dcdcdc', errorColor='#ff4210'):
         self.ip = ip

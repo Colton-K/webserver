@@ -293,6 +293,8 @@ def switches():
     else:
         status = request.args.get("light")
     
+    print(status)
+
     for switch in lightswitches:
         switch.setStatus(status)
 
