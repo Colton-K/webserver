@@ -21,7 +21,8 @@ class lightswitch:
             binStatus = 0
     
         try:
-            req = requests.get('httpL//{}/switch?light={}'.format(self.ip, binStatus))
+            print("Sending request:",'http://{}/switch?light={}'.format(self.ip, binStatus))
+            req = requests.get('http://{}/switch?light={}'.format(self.ip, binStatus))
         except:
             print("Couldn't connect to {}".format(self.ip))
 
