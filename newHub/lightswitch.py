@@ -1,8 +1,9 @@
 import requests
 
 class lightswitch:
-    def __init__(self, ip, selectedBgColor='#ffffff', deselectedBgColor='#dcdcdc', errorColor='#ff4210'):
+    def __init__(self, ip, inverted=False, selectedBgColor='#ffffff', deselectedBgColor='#dcdcdc', errorColor='#ff4210'):
         self.ip = ip
+        self.inverted = inverted
 
         self.selectedBgColor = selectedBgColor
         self.deselectedBgColor = deselectedBgColor
@@ -17,11 +18,14 @@ class lightswitch:
     def setStatus(self, status):
         self.status = status
         
+        if inverted:
+            status = not status
+
         if status == 'on':
             binStatus = 1
         else:
             binStatus = 0
-    
+
         try:
             print("Sending request:",'http://{}/switch?light={}'.format(self.ip, binStatus))
             req = requests.get('http://{}/switch?light={}'.format(self.ip, binStatus))
