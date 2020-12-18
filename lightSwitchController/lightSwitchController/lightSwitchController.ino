@@ -8,6 +8,7 @@ ESP8266WebServer server(80);
 
 // servo vars
 #include <Servo.h>
+#define OFFSET -6
 
 //#define SERVOPIN 14 // D5
 #define SERVOPIN 4
@@ -78,19 +79,19 @@ void loop() {
 void turnLightsOff() {
   Serial.println("turning lights off");
 //  move down
-  myservo.write(0);
+  myservo.write(45+OFFSET);
   delay(500);
 // move center
-  myservo.write(90);
+  myservo.write(90+OFFSET);
   delay(500);
 }
 
 void turnLightsOn() {
   Serial.println("turning lights on");
 // move up
-  myservo.write(180);
+  myservo.write(160+OFFSET);
   delay(500);
 // move center
-  myservo.write(90);
+  myservo.write(90+OFFSET);
   delay(500);
 }
