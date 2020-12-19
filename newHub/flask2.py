@@ -32,7 +32,7 @@ for lightIP in lightIPs:
 lightswitches = []
 lightswitchIPs = ['192.168.11.75']#['192.168.11.5, 192.168.11.7']
 for lightswitchIP in lightswitchIPs:
-    lightswitches.append(lightswitch(lightswitchIP, true))
+    lightswitches.append(lightswitch(lightswitchIP, True))
 
 
 # files
