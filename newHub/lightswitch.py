@@ -18,7 +18,7 @@ class lightswitch:
     def setStatus(self, status):
         self.status = status
         
-        if inverted:
+        if self.inverted:
             status = not status
 
         if status == 'on':
