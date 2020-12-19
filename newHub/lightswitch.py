@@ -19,7 +19,10 @@ class lightswitch:
         self.status = status
         
         if self.inverted:
-            status = not status
+            if status == 'on':
+                status = 'off'
+            elif status == 'off':
+                status = 'on'
 
         if status == 'on':
             binStatus = 1
