@@ -15,7 +15,7 @@ app = Flask(__name__)
 
 # initialize fans
 smartFans = []
-fanIPs = []
+fanIPs = ['192.168.11.5']
 for fanIP in fanIPs:
     smartFans.append(smartFan(fanIP))
 
