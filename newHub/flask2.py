@@ -13,10 +13,10 @@ from lightswitch import lightswitch
 
 app = Flask(__name__)
 
-lightswitchIPs = ['192.168.11.75']
+lightswitchIPs = ['192.168.11.11']
 fanIPs = []
-lightIPs = [] 
-rgbStripIP = '192.168.11.73'
+lightIPs = ['192.168.11.7'] 
+rgbStripIP = '192.168.11.10'
 
 # initialize fans
 smartFans = []
@@ -29,7 +29,7 @@ rgbStrip1 = rgbStrip(rgbStripIP)
 # initialize smart lights
 smartLights = []
 for lightIP in lightIPs:
-    smartLights.append(smartLight(lightIP))
+    smartLights.append(smartLight(lightIP, offon=True))
 
 # init lightswitches for old fashioned lights
 lightswitches = []
