@@ -34,7 +34,7 @@ for lightIP in lightIPs:
 # init lightswitches for old fashioned lights
 lightswitches = []
 for lightswitchIP in lightswitchIPs:
-    lightswitches.append(lightswitch(lightswitchIP, True))
+    lightswitches.append(lightswitch(lightswitchIP, False))
 
 
 # files
