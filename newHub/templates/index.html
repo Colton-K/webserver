@@ -116,7 +116,17 @@
     {% endif %}
 
 
-    {% if numLights >= 1 %}
+    {% if numLights == 1 %}
+    <div class="lights">
+        <h3>Light Control</h3>
+        <form action="light1" method="POST">
+            <button class="bbbutton light1OnButton" type="submit" name="light" value="on">On</button>
+            <button class="bbbutton light1OffButton" type="submit" name="light" value="off">Off</button>
+        </form>
+    </div>
+    {% endif %}
+
+    {% if numLights > 1 %}
     <span id="lightControl">
         <h3>Lamp Control</h3>
         <div class="lights">
