@@ -148,9 +148,12 @@ def effects():
 """
     Fans subsystem
 """
-@app.route("/fans", methods=["POST"])
+@app.route("/fans", methods=["POST", "GET"])
 def fans():
-    status = request.form["fans"]
+    if request.method == "POST":
+        status = request.form["fans"]
+    else:
+        status = request.args.get("fans")
 
     for fan in smartFans:
         #change status of fan
