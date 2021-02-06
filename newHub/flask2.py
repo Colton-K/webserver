@@ -14,7 +14,7 @@ from lightswitch import lightswitch
 app = Flask(__name__)
 
 lightswitchIPs = ['192.168.11.11']
-fanIPs = []
+fanIPs = ['192.168.11.5','192.168.11.6']
 lightIPs = ['192.168.11.7'] 
 rgbStripIP = '192.168.11.10'
 
