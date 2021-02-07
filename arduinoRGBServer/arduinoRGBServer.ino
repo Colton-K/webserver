@@ -204,7 +204,7 @@ void loop() {
 void smartdelay(int t) {
   for(int i = 0; i < t; i++) {
     server.handleClient(); // will finish current effect, but at least update the webpage accordingly
-    delay(t); 
+    delay(1); 
   }
 }
 

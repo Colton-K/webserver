@@ -2,7 +2,7 @@
 <html>
     <head>
         <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/mainpage.css') }}">
-        <script type=text/javascript src="{{url_for('static', filename='main.js')}}"></script>
+        <script type=text/javascript src="{{ url_for('static', filename='main.js') }}"></script>
         <title>Control Lights</title>
         <style>
             body {
@@ -85,140 +85,170 @@
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <!-- <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
         <link rel="icon" href="/favicon.ico" type="image/x-icon"> -->
+
     </head>
 
-    <body>
-    
-    {% if numSwitches >= 1 %}
-    <span id="switchControl">
-        <h3>Lightswitch Control</h3>
-        <div class="switches">
-            <form action="switches" method="POST">
-                <button class="bbbutton lsOnButton" type="submit" name="light" value="on">All On</button>
-                <button class="bbbutton lsOffButton" type="submit" name="light" value="off">All Off</button>
-            </form>
-        </div>
+<body>
 
-        {% if numSwitches > 1 %}
-        <div id="switches">
-            <form action="switch1" method="POST">
-                <button class="bbbutton ls1OnBgColor" type="submit" name="light" value="on">On</button>
-                <button class="bbbutton ls1OffBgColor" type="submit" name="light" value="off">Off</button>
-            </form>
-            <form action="switch2" method="POST">
-                <button class="bbbutton ls2OnBgColor" type="submit" name="light" value="on">On</button>
-                <button class="bbbutton ls2OffBgColor" type="submit" name="light" value="off">Off</button>
-            </form>
-        </div>
+    
+
+    <!-- Main tab -->
+    <div id="Main" class="tabcontent"> 
+        <!-- <br> <br> -->
+        {% if numSwitches >= 1 %}
+        <span id="switchControl">
+            <h3>Lightswitch Control</h3>
+            <div class="switches">
+                <form action="switches" method="POST">
+                    <button class="bbbutton lsOnButton" type="submit" name="light" value="on">All On</button>
+                    <button class="bbbutton lsOffButton" type="submit" name="light" value="off">All Off</button>
+                </form>
+            </div>
+
+            {% if numSwitches > 1 %}
+            <div id="switches">
+                <form action="switch1" method="POST">
+                    <button class="bbbutton ls1OnBgColor" type="submit" name="light" value="on">On</button>
+                    <button class="bbbutton ls1OffBgColor" type="submit" name="light" value="off">Off</button>
+                </form>
+                <form action="switch2" method="POST">
+                    <button class="bbbutton ls2OnBgColor" type="submit" name="light" value="on">On</button>
+                    <button class="bbbutton ls2OffBgColor" type="submit" name="light" value="off">Off</button>
+                </form>
+            </div>
+            {% endif %}
+
+        </span>
         {% endif %}
 
-    </span>
-    {% endif %}
 
-
-    {% if numLights == 1 %}
-    <div class="lights">
-        <h3>Light Control</h3>
-        <form action="light1" method="POST">
-            <button class="bbbutton light1OnButton" type="submit" name="light" value="on">On</button>
-            <button class="bbbutton light1OffButton" type="submit" name="light" value="off">Off</button>
-        </form>
-    </div>
-    {% endif %}
-
-    {% if numLights > 1 %}
-    <span id="lightControl">
-        <h3>Lamp Control</h3>
+        {% if numLights == 1 %}
         <div class="lights">
-            <form action="lights" method="POST">
-                <button class="bbbutton lightOnButton" type="submit" name="lights" value="on">All On</button>
-                <button class="bbbutton lightOffButton" type="submit" name="lights" value="off">All Off</button>
-            </form>
-        </div>
-        <div id="lights"> 
-            <h4>Individual Lamp Control</h4>
+            <h3>Light Control</h3>
             <form action="light1" method="POST">
                 <button class="bbbutton light1OnButton" type="submit" name="light" value="on">On</button>
                 <button class="bbbutton light1OffButton" type="submit" name="light" value="off">Off</button>
             </form>
-            {% if numLights >= 2 %}
-            <form action="light2" method="POST">
-                <button class="bbbutton light2OnButton" type="submit" name="light" value="on">On</button>
-                <button class="bbbutton light2OffButton" type="submit" name="light" value="off">Off</button>
-            </form>
-            {% endif %}
-            {% if numLights >= 3 %}
-            <form action="light3" method="POST">
-                <button class="bbbutton light3OnButton" type="submit" name="light" value="on">On</button>
-                <button class="bbbutton light3OffButton" type="submit" name="light" value="off">Off</button>
-            </form>
-            {% endif %}
         </div>
-    </span>
-    {% endif %}
+        {% endif %}
+
+        {% if numLights > 1 %}
+        <span id="lightControl">
+            <h3>Lamp Control</h3>
+            <div class="lights">
+                <form action="lights" method="POST">
+                    <button class="bbbutton lightOnButton" type="submit" name="lights" value="on">All On</button>
+                    <button class="bbbutton lightOffButton" type="submit" name="lights" value="off">All Off</button>
+                </form>
+            </div>
+            <div id="lights"> 
+                <h4>Individual Lamp Control</h4>
+                <form action="light1" method="POST">
+                    <button class="bbbutton light1OnButton" type="submit" name="light" value="on">On</button>
+                    <button class="bbbutton light1OffButton" type="submit" name="light" value="off">Off</button>
+                </form>
+                {% if numLights >= 2 %}
+                <form action="light2" method="POST">
+                    <button class="bbbutton light2OnButton" type="submit" name="light" value="on">On</button>
+                    <button class="bbbutton light2OffButton" type="submit" name="light" value="off">Off</button>
+                </form>
+                {% endif %}
+                {% if numLights >= 3 %}
+                <form action="light3" method="POST">
+                    <button class="bbbutton light3OnButton" type="submit" name="light" value="on">On</button>
+                    <button class="bbbutton light3OffButton" type="submit" name="light" value="off">Off</button>
+                </form>
+                {% endif %}
+            </div>
+        </span>
+        {% endif %}
 
 
 
-    {% if numFans >= 1 %}
-    <span id="fanControl">
-        <h3>Fan Control</h3>
-        <div class="fans">
-            <form action="fans" method="POST">
-                <button class="bbbutton fanOnButton" type="submit" name="fans" value="on">All On</button>
-                <button class="bbbutton fanOffButton" type="submit" name="fans" value="off">All Off</button>
-            </form>
+        {% if numFans >= 1 %}
+        <span id="fanControl">
+            <h3>Fan Control</h3>
+            <div class="fans">
+                <form action="fans" method="POST">
+                    <button class="bbbutton fanOnButton" type="submit" name="fans" value="on">All On</button>
+                    <button class="bbbutton fanOffButton" type="submit" name="fans" value="off">All Off</button>
+                </form>
 
-        </div>
-        <div id="fans" style="display:inline">
-            <h4>Individual Fan Control</h4>
-            <form action="fan1" method="POST">
-                <button class="bbbutton fan1OnButton" type="submit" name="fan" value="on">On</button>
-                <button class="bbbutton fan1OffButton" type="submit" name="fan" value="off">Off</button>
-            </form>
-            {% if numFans >= 2 %}
-            <form action="fan2" method="POST">
-                <button class="bbbutton fan2OnButton" type="submit" name="fan" value="on">On</button>
-                <button class="bbbutton fan2OffButton" type="submit" name="fan" value="off">Off</button>
-            </form>
-            {% endif %}
-            {% if numFans >= 3 %}
-            <form action="fan3" method="POST">
-                <button class="bbbutton fan3OnButton" type="submit" name="fan" value="on">On</button>
-                <button class="bbbutton fan3OffButton" type="submit" name="fan" value="off">Off</button>
-            </form>
-            {% endif %}
-        </div>
-    </span>
-    {% endif %}
+            </div>
+            <div id="fans" style="display:inline">
+                <h4>Individual Fan Control</h4>
+                <form action="fan1" method="POST">
+                    <button class="bbbutton fan1OnButton" type="submit" name="fan" value="on">On</button>
+                    <button class="bbbutton fan1OffButton" type="submit" name="fan" value="off">Off</button>
+                </form>
+                {% if numFans >= 2 %}
+                <form action="fan2" method="POST">
+                    <button class="bbbutton fan2OnButton" type="submit" name="fan" value="on">On</button>
+                    <button class="bbbutton fan2OffButton" type="submit" name="fan" value="off">Off</button>
+                </form>
+                {% endif %}
+                {% if numFans >= 3 %}
+                <form action="fan3" method="POST">
+                    <button class="bbbutton fan3OnButton" type="submit" name="fan" value="on">On</button>
+                    <button class="bbbutton fan3OffButton" type="submit" name="fan" value="off">Off</button>
+                </form>
+                {% endif %}
+            </div>
+        </span>
+        {% endif %}
+        
+        <span id="color">
+            <h3>LED Light Strips</h3>
+            <p>Colors</p>
+            <div class="buttons">
+                <form action="button" method="POST">
+                    <button class="button button1" onclick="setHex('#4CAF50')" type="submit" name="button" value="#00ff00">Green</button>
+                    <button class="button button2" onclick="setHex('#64b5ff')" type="submit" name="button" value="#64b5ff">Blue</button>
+                    <button class="button button3" onclick="setHex('#f44336')" type="submit" name="button" value="#ff0000">Red</button>
+                    <br>
+                    <button class="button button4" onclick="setHex('#8b54ff')" type="submit" name="button" value="#8b54ff">Purple</button>
+                    <button class="button button5" onclick="setHex('#ffffff')" type="submit" name="button" value="#ffffff">White</button>
+                    <button class="button button6" onclick="setHex('#ffa500')" type="submit" name="button" value="#ffa500">Orange</button>
+                    <br>
+                </form>
+
+                <form action="brightness" method="POST">
+                    <p>Brightness</p>
+                    <button class="bbutton brightnessButton1" onclick="setBrightness(this.value)" type="submit" name="brightness" value="0">0%</button>
+                    <button class="bbutton brightnessButton2" onclick="setBrightness(this.value)" type="submit" name="brightness" value="77">30%</button>
+                    <button class="bbutton brightnessButton3" onclick="setBrightness(this.value)" type="submit" name="brightness" value="153">60%</button>
+                    <button class="bbutton brightnessButton4" onclick="setBrightness(this.value)" type="submit" name="brightness" value="255">100%</button>
+                </form>
+            </div>
+        </span>
+
+    </div>
     
-    <span id="color">
-        <h3>LED Light Strips</h3>
-        <p>Colors</p>
-        <div class="buttons">
-            <form action="button" method="POST">
-                <button class="button button1" onclick="setHex('#4CAF50')" type="submit" name="button" value="#00ff00">Green</button>
-                <button class="button button2" onclick="setHex('#64b5ff')" type="submit" name="button" value="#64b5ff">Blue</button>
-                <button class="button button3" onclick="setHex('#f44336')" type="submit" name="button" value="#ff0000">Red</button>
-                <br>
-                <button class="button button4" onclick="setHex('#8b54ff')" type="submit" name="button" value="#8b54ff">Purple</button>
-                <button class="button button5" onclick="setHex('#ffffff')" type="submit" name="button" value="#ffffff">White</button>
-                <button class="button button6" onclick="setHex('#ffa500')" type="submit" name="button" value="#ffa500">Orange</button>
-                <br>
-            </form>
+    <!-- temp tab -->
+    <div id="Temp" class="tabcontent"> 
+        <h3>Temperature Control</h3>
+        <h4>The current temperature is {{ currentTemp }} degrees</h4>
+        <!-- <br> <br> -->
+        <!-- <h3>This is the temp tab...</h3> -->
+        <form action="tempControl", method="POST">
+            <p>Thermostat status</p>
+            <button class="bbbutton tempControlOnButton" type="submit" name="status" value="on">On</button>
+            <button class="bbbutton tempControlOffButton" type="submit" name="status" value="off">Off</button>
+        </form>
+    
+        <form action="setDesiredTemp", method="POST">
+            <p>Enter desired temperature</p>
+            <input type="number" id="temp" name="temp">
+            <input type="submit">
+        </form>
 
-            <form action="brightness" method="POST">
-                <p>Brightness</p>
-                <button class="bbutton brightnessButton1" onclick="setBrightness(this.value)" type="submit" name="brightness" value="0">0%</button>
-                <button class="bbutton brightnessButton2" onclick="setBrightness(this.value)" type="submit" name="brightness" value="77">30%</button>
-                <button class="bbutton brightnessButton3" onclick="setBrightness(this.value)" type="submit" name="brightness" value="153">60%</button>
-                <button class="bbutton brightnessButton4" onclick="setBrightness(this.value)" type="submit" name="brightness" value="255">100%</button>
-            </form>
-        </div>
+    </div>
 
-        <button class="toggleButton" onclick="toggleSliders()">Toggle Sliders</button>
-        <!-- experimental -->
-
-        <div id="sliders" style="display:none">
+    <!-- Settings tab -->
+    <div id="Settings" class="tabcontent"> 
+        <h3>Settings</h3>
+        <!-- <br> <br> -->
+        <div id="sliders">
             <h5>RGB Control</h5>
             <div class="sliders">
                 <form action="effects" method="POST">
@@ -260,10 +290,20 @@
                 </form>
             </div>
         </div>
+        </div>
     
         <p id="error"></p>
-    </span>
-    </body>
 
+        <!--- Tab links -->
+        <div class="tab">
+            <button class="tablinks" onclick="openPage(event, 'Main')" id="defaultOpen">Main</button>
+            <button class="tablinks" onclick="openPage(event, 'Temp')">Temp</button>
+            <button class="tablinks" onclick="openPage(event, 'Settings')">Settings</button>
+        </div>
 
+        <!-- to autoshow the main menu -->
+        <script>
+            document.getElementById("defaultOpen").click();
+        </script>
+</body>
 </html>

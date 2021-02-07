@@ -69,6 +69,9 @@ void setup() {
   localserver.on("/", root);
   localserver.on("/tempcontrol", tempcontrol);
   localserver.on("/settemp", settemp);
+  localserver.onNotFound(root);
+  localserver.begin();
+  Serial.println("HTTP server started");
 }
 
 // declarations for pages 
@@ -100,8 +103,9 @@ void settemp() {
 
 void smartdelay(int t) {
   for(int i = 0; i < t; i++) {
+//    Serial.println("Handling client");
     localserver.handleClient(); // will finish current effect, but at least update the webpage accordingly
-    delay(t); 
+    delay(1); 
   }
 }
 
@@ -122,7 +126,7 @@ void loop() {
       fanOff();
     }
   }
-  fanOn();
+//  fanOn();
   recordTemperature(temperatureC);
   smartdelay(300000);
 }

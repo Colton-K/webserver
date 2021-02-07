@@ -1,6 +1,5 @@
 import requests
 
-
 gammaCorrection = [
     0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
     0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  1,  1,  1,  1,
@@ -46,7 +45,7 @@ class rgbStrip:
         self.onColor = onColor
         self.offColor = offColor
         self.errorColor = errorColor
-        self.brightnessButtonBgColors = [offColor, offColor, offColor, onColor]
+        self.brightnessButtonBgColors = [onColor, offColor, offColor, offColor]
 
         self.rgbServerConnected = False
         

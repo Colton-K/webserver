@@ -1,3 +1,81 @@
+
+
+/* body { */
+/*     background-color: {{ color }}; */
+/* } */
+/* .brightnessButton1 { */
+/*     background-color: {{ brightnessButton1BackgroundColor }}; */
+/* } */
+/* .brightnessButton2 { */
+/*     background-color: {{ brightnessButton2BackgroundColor }}; */
+/* } */
+/* .brightnessButton3 { */
+/*     background-color: {{ brightnessButton3BackgroundColor }}; */
+/* } */
+/* .brightnessButton4 { */
+/*     background-color: {{ brightnessButton4BackgroundColor }}; */
+/* } */
+/* .fanOnButton { */
+/*     background-color: {{ fanOnButtonBackgroundColor }}; */
+/* } */
+/* .fanOffButton { */
+/*     background-color: {{ fanOffButtonBackgroundColor }}; */
+/* } */
+/* .fan1OnButton { */
+/*     background-color: {{ fan1OnButtonBackgroundColor }}; */
+/* } */
+/* .fan1OffButton { */
+/*     background-color: {{ fan1OffButtonBackgroundColor }}; */
+/* } */
+/* .fan2OnButton { */
+/*     background-color: {{ fan2OnButtonBackgroundColor }}; */
+/* } */
+/* .fan2OffButton { */
+/*     background-color: {{ fan2OffButtonBackgroundColor }}; */
+/* } */
+/* .fan3OnButton { */
+/*     background-color: {{ fan3OnButtonBackgroundColor }}; */
+/* } */
+/* .fan3OffButton { */
+/*     background-color: {{ fan3OffButtonBackgroundColor }}; */
+/* } */
+/* .lightOnButton { */
+/*     background-color: {{ lightOnButtonBackgroundColor }}; */
+/* } */
+/* .lightOffButton { */
+/*     background-color: {{ lightOffButtonBackgroundColor }}; */
+/* } */
+/* .light1OnButton { */
+/*     background-color: {{ light1OnButtonBackgroundColor }}; */
+/* } */
+/* .light1OffButton { */
+/*     background-color: {{ light1OffButtonBackgroundColor }}; */
+/* } */
+/* .light2OnButton { */
+/*     background-color: {{ light2OnButtonBackgroundColor }}; */
+/* } */
+/* .light2OffButton { */
+/*     background-color: {{ light2OffButtonBackgroundColor }}; */
+/* } */
+/* .light3OnButton { */
+/*     background-color: {{ light3OnButtonBackgroundColor }}; */
+/* } */
+/* .light3OffButton { */
+/*     background-color: {{ light3OffButtonBackgroundColor }}; */
+/* } */
+/* .ls1OnBgColor { */
+/*     background-color: {{ ls1OnBgColor }}; */
+/* } */
+/* .ls1OffBgColor { */
+/*     background-color: {{ ls1OffBgColor }}; */
+/* } */
+/* .ls2OnBgColor { */
+/*     background-color: {{ ls2OnBgColor }}; */
+/* } */
+/* .ls2OffBgColor { */
+/*     background-color: {{ ls2OffBgColor }}; */
+/* } */
+
 h2 {
     text-align: left;
     font-size: 25px; 
@@ -38,13 +116,13 @@ p {
 }
 
 .button {
-    /* padding-top: 20px;
+    padding-top: 20px;
     padding-right: 0px;
     padding-bottom: 0px;
     padding-left: 0px;
     margin-top: 2px;
     margin-right: 0px;
-    margin-left: 0px; */
+    margin-left: 0px;
     height: 50px;
     width: 100px;
     text-align: center;
@@ -102,3 +180,39 @@ p {
     margin: 0;
 }
 
+
+ /* Style the tab */
+.tab {
+    /* overflow: hidden; */
+    /* border: 1px solid #ccc; */
+    /* background-color: #f1f1f1; */
+}
+  
+/* Style the buttons that are used to open the tab content */
+.tab button {
+    background-color: inherit;
+    float: left;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    padding: 14px 16px;
+    transition: 0.3s;
+}
+
+/* Change background color of buttons on hover */
+.tab button:hover {
+    background-color: #ddd;
+}
+  
+/* Create an active/current tablink class */
+.tab button.active {
+    background-color: #ccc;
+}
+    
+/* Style the tab content */
+.tabcontent {
+    /* display: none; */
+    /* padding: 6px 12px; */
+    /* border: 1px solid #ccc; */
+    /* border-top: none; */
+}

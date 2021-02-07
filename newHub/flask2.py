@@ -10,6 +10,7 @@ from smartFan import smartFan
 from rgbStrip import rgbStrip
 from smartLight import smartLight
 from lightswitch import lightswitch
+from smartThermostat import smartThermostat
 
 app = Flask(__name__)
 
@@ -17,6 +18,7 @@ lightswitchIPs = ['192.168.11.11']
 fanIPs = ['192.168.11.5','192.168.11.6']
 lightIPs = ['192.168.11.7'] 
 rgbStripIP = '192.168.11.10'
+thermostatIP = '192.168.11.13'
 
 # initialize fans
 smartFans = []
@@ -36,6 +38,8 @@ lightswitches = []
 for lightswitchIP in lightswitchIPs:
     lightswitches.append(lightswitch(lightswitchIP, False))
 
+# init thermostat
+thermostat = smartThermostat(thermostatIP)
 
 # files
 base = 'index.html'
@@ -88,6 +92,7 @@ def index():
     numSwitches=len(lightswitches), \
     ls1OnBgColor=lightswitchOnColors[0], ls1OffBgColor=lightswitchOffColors[0], \
     ls2OnBgColor=lightswitchOnColors[1], ls2OffBgColor=lightswitchOffColors[1], \
+    currentTemp=thermostat.getTemp(), \
     )
     
 @app.route('/login', methods=['POST'])
@@ -337,6 +342,21 @@ def temp():
         appendStr = str(datetime.datetime.now()) + ", " + temp1 + "\n"
         fh.write(appendStr)
 
+    return index()
+
+"""
+    Thermostat
+"""
+@app.route("/tempControl", methods=["POST"])
+def tempControl():
+    status = request.form["status"]
+    thermostat.setStatus(status)
+    return index()
+
+@app.route("/setDesiredTemp", methods=["POST"])
+def setDesuredTemp():
+    desiredTemp = request.form["temp"]
+    thermostat.setTemp(desiredTemp)
     return index()
 
 """
