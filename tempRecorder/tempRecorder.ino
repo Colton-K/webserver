@@ -10,13 +10,13 @@ IPAddress server(192, 168, 11, 8);
 const int httpPort = 80;
 
 int tempControl = 0;
-int desiredTemp = 58;
+int desiredTemp = 80;
 
 void fanOn() {
   WiFiClient client;
   if (client.connect(server, httpPort)) {  
     Serial.println("Turning fans on");
-    Serial.println("Connected");
+//    Serial.println("Connected");
     client.println("GET /fans?fans=\"on\" HTTP/1.1");
     client.println();
   }
@@ -26,7 +26,7 @@ void fanOff() {
   WiFiClient client;
   if (client.connect(server, httpPort)) {
     Serial.println("Turning fans off");
-    Serial.println("Connected");
+//    Serial.println("Connected");
     client.println("GET /fans?fans=\"off\" HTTP/1.1");
     client.println();
   }
@@ -39,7 +39,7 @@ void recordTemperature(int temp) {
   url += temp;
 
   if (client.connect(server, httpPort)) {
-    Serial.println("Connected");
+//    Serial.println("Connected");
     client.println(url);
     client.println();
   }
@@ -98,6 +98,8 @@ void settemp() {
     sendStr += localserver.arg("temp").toInt();
   }
 
+  desiredTemp = tempControl;
+
   localserver.send(200, "text/plain", sendStr);
 }
 
@@ -117,6 +119,8 @@ void loop() {
   temperatureC = temperatureC * 100;
   Serial.print(temperatureC);
   Serial.println(" degrees C");
+  
+  Serial.println(desiredTemp);
 
   if (tempControl) {
     if (temperatureC > desiredTemp) {
