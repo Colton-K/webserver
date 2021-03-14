@@ -38,7 +38,10 @@ class smartThermostat:
             print("Couldn't connect to {}".format(self.ip))
 
     def getTemp(self):
-        return 68
+        # get last line of temperatures.txt
+        with open('temperatures.txt', 'r') as fh:
+            temps = fh.readlines()
+            return temps[-1]
 
     def setTemp(self, desiredTemp):
         try: 

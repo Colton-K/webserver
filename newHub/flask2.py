@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 from flask import Flask, render_template, request, jsonify, flash, session   # Flask modules 
 import serial # communicate with arduino
 import os
