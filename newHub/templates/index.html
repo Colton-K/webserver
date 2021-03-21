@@ -244,6 +244,14 @@
             <input type="submit">
         </form>
 
+        <h4>The threshold is currently set at:</h4>
+        <p>{{ currentThreshold }}</p>
+        <form action="setDesiredThreshold", method="POST">
+            <p>Enter desired threshold</p>
+            <input type="number" id="threshold" name="threshold">
+            <input type="submit">
+        </form>
+
     </div>
 
     <!-- Settings tab -->

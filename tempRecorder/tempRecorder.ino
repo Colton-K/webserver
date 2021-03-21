@@ -9,7 +9,9 @@ IPAddress server(192, 168, 11, 8);
 #define sensor A0
 const int httpPort = 80;
 
+// globals for controlling temperature
 int tempControl = 0;
+int thresholdLevel = 0;
 int desiredTemp = 80;
 
 void fanOn() {
@@ -69,6 +71,7 @@ void setup() {
   localserver.on("/", root);
   localserver.on("/tempcontrol", tempcontrol);
   localserver.on("/settemp", settemp);
+  localserver.on("/setthreshold", setthreshold);
   localserver.onNotFound(root);
   localserver.begin();
   Serial.println("HTTP server started");
@@ -103,6 +106,17 @@ void settemp() {
   localserver.send(200, "text/plain", sendStr);
 }
 
+void setthreshold() {
+    String sendStr = "Setting threshold to ";
+
+    if(localserver.hasArg("threshold")) {
+        thresholdLevel = localserver.arg("threshold").toInt();
+        sendStr += localserver.arg("threshold").toInt();
+    }
+
+    localserver.send(200, "text/plain", sendStr);
+}
+
 void smartdelay(int t) {
   for(int i = 0; i < t; i++) {
 //    Serial.println("Handling client");
@@ -122,15 +136,17 @@ void loop() {
   
   Serial.println(desiredTemp);
 
+  // control fan if needed
   if (tempControl) {
-    if (temperatureC > desiredTemp) {
+    if (temperatureC > (desiredTemp + thresholdLevel)) {
       fanOn();
     }
-    else {
+    else if (temperatureC < (desiredTemp - thresholdLevel)){
       fanOff();
     }
   }
-//  fanOn();
+
+  // fanOn();
   recordTemperature(temperatureC);
   smartdelay(300000);
 }

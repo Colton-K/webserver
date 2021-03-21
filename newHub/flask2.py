@@ -94,7 +94,7 @@ def index():
     numSwitches=len(lightswitches), \
     ls1OnBgColor=lightswitchOnColors[0], ls1OffBgColor=lightswitchOffColors[0], \
     ls2OnBgColor=lightswitchOnColors[1], ls2OffBgColor=lightswitchOffColors[1], \
-    currentTemp=thermostat.getTemp(), \
+    currentTemp=thermostat.getTemp(), currentThreshold=thermostat.getThreshold()\
     )
     
 @app.route('/login', methods=['POST'])
@@ -356,9 +356,15 @@ def tempControl():
     return index()
 
 @app.route("/setDesiredTemp", methods=["POST"])
-def setDesuredTemp():
+def setDesiredTemp():
     desiredTemp = request.form["temp"]
     thermostat.setTemp(desiredTemp)
+    return index()
+
+@app.route("/setDesiredThreshold", methods=["POST"])
+def setDesiredThreshold():
+    desiredThreshhold = request.form["threshold"]
+    thermostat.setThreshold(desiredThreshhold)
     return index()
 
 """

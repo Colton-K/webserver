@@ -1,10 +1,11 @@
 import requests
 
 class smartThermostat:
-    def __init__(self, ip="", desiredTemp = 58, selectedBgColor = '#ffffff', deselectedBgColor = '#dcdcdc', errorColor = '#ff4210'):
+    def __init__(self, ip="", desiredTemp = 58, desiredThreshold = 5, selectedBgColor = '#ffffff', deselectedBgColor = '#dcdcdc', errorColor = '#ff4210'):
         self.status = 0
         self.ip = ip
         self.desiredTemp = desiredTemp
+        self.desiredThreshold = desiredThreshold
 
         self.deselectedBgColor = deselectedBgColor
         self.selectedBgColor = selectedBgColor
@@ -43,11 +44,21 @@ class smartThermostat:
             temps = fh.readlines()
             return temps[-1]
 
+    def getThreshold(self):
+        return self.desiredThreshold
+
     def setTemp(self, desiredTemp):
         try: 
             req = requests.get("http://{}/settemp?temp={}".format(self.ip, desiredTemp))
             self.desiredTemp = desiredTemp
         except:
             print("Couldn't connect to {}".format(self.ip))
-
+            
     
+    def setThreshold(self, desiredThreshold):
+        try: 
+            req = requests.get("http://{}/setthreshold?temp={}".format(self.ip, desiredThreshold))
+            self.desiredThreshold = desiredThreshold
+        except:
+            print("Couldn't connect to {}".format(self.ip))
+
