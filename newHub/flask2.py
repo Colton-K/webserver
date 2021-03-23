@@ -17,8 +17,8 @@ from smartThermostat import smartThermostat
 app = Flask(__name__)
 
 lightswitchIPs = ['192.168.11.11']
-fanIPs = ['192.168.11.5','192.168.11.6']
-lightIPs = ['192.168.11.7'] 
+fanIPs = ['192.168.11.5','192.168.11.6', '192.168.11.7']
+lightIPs = [] #['192.168.11.7'] 
 rgbStripIP = '192.168.11.10'
 thermostatIP = '192.168.11.13'
 
