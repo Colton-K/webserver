@@ -6,6 +6,7 @@ class smartThermostat:
         self.ip = ip
         self.desiredTemp = desiredTemp
         self.desiredThreshold = desiredThreshold
+        self.currentTemp = -1
 
         self.deselectedBgColor = deselectedBgColor
         self.selectedBgColor = selectedBgColor
