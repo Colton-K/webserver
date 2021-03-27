@@ -239,7 +239,7 @@
         </form>
     
         <form action="setDesiredTemp", method="POST">
-            <p>Enter desired temperature</p>
+            <p>Enter desired temperature, currently set at {{ targetTemp }}</p>
             <input type="number" id="temp" name="temp">
             <input type="submit">
         </form>
@@ -252,6 +252,10 @@
             <input type="submit">
         </form>
 
+        <form action="refreshTemperature", method="POST">
+            <p>Current: {{ manualTemp }}</p> 
+            <input type="submit">
+        </form>
     </div>
 
     <!-- Settings tab -->

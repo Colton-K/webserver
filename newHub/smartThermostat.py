@@ -6,6 +6,7 @@ class smartThermostat:
         self.ip = ip
         self.desiredTemp = desiredTemp
         self.desiredThreshold = desiredThreshold
+        self.currentTemp = -1
 
         self.deselectedBgColor = deselectedBgColor
         self.selectedBgColor = selectedBgColor
@@ -14,6 +15,8 @@ class smartThermostat:
         self.onButtonColor = deselectedBgColor
         self.offButtonColor = selectedBgColor
 
+    def getTargetTemp(self):
+        return self.desiredTemp
 
     def setIP(self, ipaddr):
         self.ip = ipaddr
@@ -62,3 +65,12 @@ class smartThermostat:
         except:
             print("Couldn't connect to {}".format(self.ip))
 
+    def getTemp(self):
+        try:
+            req = requests.get("http://{}/currentTemp".format(self.ip))
+            #  self.currentTemp = req.text
+        except:
+            print("Couldn't connect to {}".format(self.ip))
+
+        #  return req.text
+        #  return 1

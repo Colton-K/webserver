@@ -72,6 +72,7 @@ void setup() {
   localserver.on("/tempcontrol", tempcontrol);
   localserver.on("/settemp", settemp);
   localserver.on("/setthreshold", setthreshold);
+  localserver.on("/currentTemp", currenttemp);
   localserver.onNotFound(root);
   localserver.begin();
   Serial.println("HTTP server started");
@@ -115,6 +116,26 @@ void setthreshold() {
     }
 
     localserver.send(200, "text/plain", sendStr);
+}
+
+void currenttemp() {
+  String sendStr = "";
+  
+  int reading = analogRead(sensor); //needs 5V input not 3.3V
+  float temperatureC = (double)reading / 1024;
+  temperatureC = temperatureC * 5;
+  temperatureC = temperatureC - .5;
+  temperatureC = temperatureC * 100;
+  Serial.print(temperatureC);
+  Serial.println(" degrees C");
+  
+  Serial.println(desiredTemp);
+
+  recordTemperature(temperatureC);
+
+  sendStr += temperatureC;
+
+  localserver.send(200, "text/plain", sendStr);
 }
 
 void smartdelay(int t) {
