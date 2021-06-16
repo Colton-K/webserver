@@ -38,7 +38,7 @@ for lightIP in lightIPs:
 # init lightswitches for old fashioned lights
 lightswitches = []
 for lightswitchIP in lightswitchIPs:
-    lightswitches.append(lightswitch(lightswitchIP, False))
+    lightswitches.append(lightswitch(lightswitchIP, inverted=True))
 
 # init thermostat
 thermostat = smartThermostat(thermostatIP)
@@ -373,6 +373,19 @@ def getCurrentTemp():
     #  manualTemp = thermostat.getTemp()
     thermostat.refreshTemp()
     return index()
+
+"""
+    TvLights
+"""
+@app.route("/tvLights", methods=["POST"])
+def tvLights():
+    status = request.form["lights"]
+    #  print("received:",status)
+    
+    req = requests.get('http://{}:5000/{}'.format("tvpi", status))
+
+    return index()
+
 
 """
     Automation

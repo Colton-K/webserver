@@ -307,11 +307,21 @@
     
         <p id="error"></p>
 
+        <!--- TV tab -->
+        <div id="TvLights" class="tabcontent">
+            <form action="tvLights" method="POST">
+                <input class="bbbutton" type="submit" name="lights" value="on">
+                <input class="bbbutton" type="submit" name="lights" value="off">
+            </form>
+            <br>
+        </div>
+
         <!--- Tab links -->
         <div class="tab">
             <button class="tablinks" onclick="openPage(event, 'Main')" id="defaultOpen">Main</button>
             <button class="tablinks" onclick="openPage(event, 'Temp')">Temp</button>
             <button class="tablinks" onclick="openPage(event, 'Settings')">Settings</button>
+            <button class="tablinks" onclick="openPage(event, 'TvLights')">TvLights</button>
         </div>
 
         <!-- to autoshow the main menu -->
