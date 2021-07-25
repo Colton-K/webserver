@@ -39,6 +39,10 @@ void recordTemperature(int temp) {
 
   String url = "GET /temp?temp1=";
   url += temp;
+  url += "&desiredTemp=";
+  url += desiredTemp;
+  url += "&thresholdLevel=";
+  url += thresholdLevel;
 
   if (client.connect(server, httpPort)) {
 //    Serial.println("Connected");
@@ -134,6 +138,16 @@ void currenttemp() {
   recordTemperature(temperatureC);
 
   sendStr += temperatureC;
+
+  // control fan if needed
+  if (tempControl) {
+    if (temperatureC > (desiredTemp + thresholdLevel)) {
+      fanOn();
+    }
+    else if (temperatureC < (desiredTemp - thresholdLevel)){
+      fanOff();
+    }
+  }
 
   localserver.send(200, "text/plain", sendStr);
 }
