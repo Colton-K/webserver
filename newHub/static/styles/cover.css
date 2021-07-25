@@ -1,0 +1,40 @@
+/* limit column width */
+.cover-container {
+  max-width: 450px;
+}
+/* button colors */
+.green {
+  /* background-color: #4CAF50; */
+  background-color: #00ff00;
+  outline-color: #00ff00;
+}
+.blue {
+  background-color: #64b5ff;
+  outline-color: #64b5ff;
+}
+.red {
+  background-color: #ff0000;
+  outline-color: #ff0000;
+}
+.purple {
+  background-color: #8b54ff;
+  outline-color: #8b54ff;
+}
+.white {
+  background-color: #ffffff;
+  outline-color: #ffffff;
+}
+.orange {
+  background-color: #ffa500;
+  outline-color: #ffa500;
+}
+/* Change background color of buttons on hover */
+.tab button:hover {
+    background-color: #ddd;
+}
+  
+/* Create an active/current tablink class */
+.tab button.active {
+    background-color: #ccc;
+}
+    
