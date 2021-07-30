@@ -385,6 +385,34 @@ def tvLights():
 
     return index()
 
+@app.route("/restartTv", methods=["POST"])
+def restartTv():
+    # restarts server - could restart whole pi in future
+    #  req = requests.get('http://{}:5000/{}'.format("tvpi", "off"))
+    #  req = requests.get('http://{}:5000/{}'.format("tvpi", "on"))
+
+    # restarts whole pi
+    req = requests.get(f'http://tvpi:5000/restart')
+
+    return index()
+
+@app.route("/tvColor", methods=["POST"])
+def tvColor():
+    status = request.form["sync"]
+
+    if status == "off":
+        req = requests.get("http://tvpi:5000/color?r=0&g=0&b=0")
+    else:
+        brightness = rgbStrip1.getBrightness()
+        r = int(rgbStrip1.getR() * brightness / 255.0)
+        g = int(rgbStrip1.getG() * brightness / 255.0)
+        b = int(rgbStrip1.getB() * brightness / 255.0)
+
+
+        print("rgbStrip settings:",brightness, r,g,b)
+        req = requests.get(f"http://tvpi:5000/color?r={r}&g={g}&b={b}")
+
+    return index()
 
 """
     Automation

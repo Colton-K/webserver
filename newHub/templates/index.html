@@ -409,18 +409,36 @@
                 <div class="row">
                     <h3>Status</h3>
                 </div>
-                <div class="row">
+                <div class="row m-2">
                     <div class="col">
                         <form action="tvLights" method="POST">
                             <div class="d-grid gap-2">
-                                <input class="btn btn-light" type="submit" name="lights" value="on">
+                                <input class="btn btn-light" type="submit" name="lights" value="On">
                             </div>
                         </form>
                     </div>
                     <div class="col">
                         <form action="tvLights" method="POST">
                             <div class="d-grid gap-2">
-                                <input class="btn btn-light" type="submit" name="lights" value="off">
+                                <input class="btn btn-light" type="submit" name="lights" value="Off">
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col m-2">
+                        <form action="restartTv" method="post">
+                            <div class="d-grid gap-2">
+                                <input class="btn btn-light" type="SUBMIT" name="restart" value="Restart Lights Server">
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col m-2">
+                        <form action="tvColor" method="POST">
+                            <div class="d-grid gap-2">
+                                <input class="btn btn-light" type="SUBMIT" name="sync" value="Sync Lights">
                             </div>
                         </form>
                     </div>
