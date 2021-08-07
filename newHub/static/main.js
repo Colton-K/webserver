@@ -29,11 +29,11 @@ function setBrightness(val) {
 function changeColor() {
     // make sure they will form a valid hex
     var rString = document.getElementById("r").innerHTML
-    rString = parseInt(rString.slice(5)).toString(16)
+    rString = parseInt(rString.slice(5)).toString(16).padStart(2, "0")
     var gString = document.getElementById("g").innerHTML
-    gString = parseInt(gString.slice(7)).toString(16)
+    gString = parseInt(gString.slice(7)).toString(16).padStart(2, "0")
     var bString = document.getElementById("b").innerHTML
-    bString = parseInt(bString.slice(6)).toString(16)
+    bString = parseInt(bString.slice(6)).toString(16).padStart(2, "0")
 
     // set background color
     var hexString = "#".concat(rString.concat(gString.concat(bString)));
