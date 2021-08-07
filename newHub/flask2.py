@@ -45,6 +45,7 @@ thermostat = smartThermostat(thermostatIP)
 # files
 base = 'index.html'
 
+
 def getIP():
     s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     try:
@@ -80,21 +81,42 @@ def index():
     for i in range(0, len(lightswitches)):
          lightswitchOnColors[i] = lightswitches[i].getOnButtonColor()    
 
-    return render_template(base, r=rgbStrip1.getR(), g=rgbStrip1.getG(), b=rgbStrip1.getB(), brightness=rgbStrip1.getBrightness(), color=rgbStrip1.getHex(), \
-    brightnessButton1BackgroundColor=rgbStrip1.getBrightnessButtonColors()[0], brightnessButton2BackgroundColor=rgbStrip1.getBrightnessButtonColors()[1], brightnessButton3BackgroundColor=rgbStrip1.getBrightnessButtonColors()[2], brightnessButton4BackgroundColor=rgbStrip1.getBrightnessButtonColors()[3], \
-    numFans=len(smartFans), \
-    fan1OnButtonBackgroundColor=fanOnColors[0], fan1OffButtonBackgroundColor=fanOffColors[0], \
-    fan2OnButtonBackgroundColor=fanOnColors[1], fan2OffButtonBackgroundColor=fanOffColors[1], \
-    fan3OnButtonBackgroundColor=fanOnColors[2], fan3OffButtonBackgroundColor=fanOffColors[2], \
-    numLights=len(smartLights), \
-    light1OnButtonBackgroundColor=lightOnColors[0], light1OffButtonBackgroundColor=lightOffColors[0], \
-    light2OnButtonBackgroundColor=lightOnColors[1], light2OffButtonBackgroundColor=lightOffColors[1], \
-    light3OnButtonBackgroundColor=lightOnColors[2], light3OffButtonBackgroundColor=lightOffColors[2], \
-    numSwitches=len(lightswitches), \
-    ls1OnBgColor=lightswitchOnColors[0], ls1OffBgColor=lightswitchOffColors[0], \
-    ls2OnBgColor=lightswitchOnColors[1], ls2OffBgColor=lightswitchOffColors[1], \
-    currentTemp=thermostat.getTemp(), currentThreshold=thermostat.getThreshold(), targetTemp=thermostat.getTargetTemp()\
-    )
+    # things to return in template
+    values = {
+            "r" : rgbStrip1.getR(),
+            "g" : rgbStrip1.getG(),
+            "b" : rgbStrip1.getB(),
+            "brightness" : rgbStrip1.getBrightness(),
+            "color" : rgbStrip1.getHex(),
+            "brightnessButton1BackgroundColor" : rgbStrip1.getBrightnessButtonColors()[0],
+            "brightnessButton2BackgroundColor" : rgbStrip1.getBrightnessButtonColors()[1],
+            "brightnessButton3BackgroundColor" : rgbStrip1.getBrightnessButtonColors()[2],
+            "brightnessButton4BackgroundColor" : rgbStrip1.getBrightnessButtonColors()[3],
+            "numFans" : len(smartFans),
+            "fan1OnButtonBackgroundColor" : fanOnColors[0],
+            "fan1OffButtonBackgroundColor" : fanOffColors[0],
+            "fan2OnButtonBackgroundColor" : fanOnColors[1],
+            "fan2OffButtonBackgroundColor" : fanOffColors[1],
+            "fan3OnButtonBackgroundColor" : fanOnColors[2],
+            "fan3OffButtonBackgroundColor" : fanOffColors[2],
+            "numLights" : len(smartLights),
+            "light1OnButtonBackgroundColor" : lightOnColors[0], 
+            "light1OffButtonBackgroundColor" : lightOffColors[0],
+            "light2OnButtonBackgroundColor" : lightOnColors[1], 
+            "light2OffButtonBackgroundColor" : lightOffColors[1],
+            "light3OnButtonBackgroundColor" : lightOnColors[2], 
+            "light3OffButtonBackgroundColor" : lightOffColors[2],
+            "numSwitches" : len(lightswitches),
+            "ls1OnBgColor" : lightswitchOnColors[0],
+            "ls1OffBgColor" : lightswitchOffColors[0], \
+            "ls2OnBgColor" : lightswitchOnColors[1], 
+            "ls2OffBgColor" : lightswitchOffColors[1], \
+            "currentTemp" : thermostat.getTemp(), 
+            "currentThreshold" : thermostat.getThreshold(), 
+            "targetTemp" : thermostat.getTargetTemp()
+            }
+
+    return render_template(base, **values)
     
 @app.route('/login', methods=['POST'])
 def login():
