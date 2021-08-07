@@ -15,7 +15,7 @@ from lightswitch import lightswitch
 from smartThermostat import smartThermostat
 
 app = Flask(__name__)
-socketPort = 8996
+socketPort = 7999
 
 lightswitchIPs = ['192.168.11.11']
 fanIPs = ['192.168.11.5','192.168.11.6', '192.168.11.7']
@@ -144,6 +144,8 @@ def setRGB(hexString):
     r,g,b = rgbStrip1.hextoRGB(hexString)
     rgbStrip1.setRGB(r,g,b)
 
+def setBrightness(level):
+    rgbStrip1.setBrightness(int(level))
 
 @app.route("/sliders", methods=["POST"])
 def sliders():
@@ -471,9 +473,19 @@ import threading
 
 async def rgbStrip(websocket, path):
     async for message in websocket:
-        setRGB(message)
+        m = message.split("|")
+        if m[0] == "rgb":
+            setRGB(m[1])
+        elif m[0] == "brightness":
+            setBrightness(m[1])
         
         await websocket.send(message)
+
+#  async def brightness(websocket, path):
+#      async for message in websocket:
+#          setBrightness(message)
+
+#          await websocket.send(message)
 
 def runSocket():
     _loop = asyncio.new_event_loop()
@@ -481,8 +493,10 @@ def runSocket():
 
     print(f"Starting websocket server on wss://{getIP()}:{socketPort}/")
     start_server = websockets.serve(rgbStrip, getIP(), socketPort)
+    #  start_brightness_server = websockets.serve(brightness, getIP(), socketPort)
 
     _loop.run_until_complete(start_server)
+    #  _loop.run_until_complete(start_brightness_server)
     _loop.run_forever()
 
 threading.Thread(target=runSocket).start()

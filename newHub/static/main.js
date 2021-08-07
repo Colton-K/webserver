@@ -2,6 +2,7 @@ var hostname = document.getElementById("hostname").innerHTML
 var port = document.getElementById("port").innerHTML
 console.log(`connecting to ws://${hostname}:${port}/`)
 var ws = new WebSocket(`ws://${hostname}:${port}/`, 'rgbStrip');
+console.log(ws)
 
 function setRed(val) {
     document.getElementById("r").innerHTML = "Red: ".concat(val);
@@ -22,8 +23,9 @@ function setBlue(val) {
 }
 
 function setBrightness(val) {
-    
     document.getElementById("brightness").innerHTML = "Brightness: ".concat(val);
+    // console.log(val)
+    ws.send(`brightness|${val}`)
 }
 
 function changeColor() {
@@ -39,8 +41,8 @@ function changeColor() {
     var hexString = "#".concat(rString.concat(gString.concat(bString)));
     document.body.style.backgroundColor = hexString;
 
-    // send to flask application
-    ws.send(hexString)
+    // send to flask application "rgb|hexstring"
+    ws.send(`rgb|${hexString}`)
 }
 
 function setHex(hexString) {
