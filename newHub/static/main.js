@@ -1,54 +1,46 @@
+var hostname = document.getElementById("hostname").innerHTML
+var port = document.getElementById("port").innerHTML
+console.log(`connecting to ws://${hostname}:${port}/`)
+var ws = new WebSocket(`ws://${hostname}:${port}/`, 'rgbStrip');
+
 function setRed(val) {
     document.getElementById("r").innerHTML = "Red: ".concat(val);
-    r = + val;
+    // r = + val;
     changeColor();
 }
 
 function setGreen(val) {
     document.getElementById("g").innerHTML = "Green: ".concat(val);
-    g = + val;
+    // g = + val;
     changeColor();
 }
 
 function setBlue(val) {
     document.getElementById("b").innerHTML = "Blue: ".concat(val);
-    b = + val;
+    // b = + val;
     changeColor();
 }
 
 function setBrightness(val) {
+    
     document.getElementById("brightness").innerHTML = "Brightness: ".concat(val);
 }
 
 function changeColor() {
     // make sure they will form a valid hex
-    var rString = r.toString(16)
-    while (rString.length < 2) {
-        rString = '0'.concat(rString)
-    }
-    var gString = g.toString(16)
-    while (gString.length < 2) {
-        gString = '0'.concat(gString)
-    }
-    var bString = b.toString(16)
-    while (bString.length < 2) {
-        bString = '0'.concat(bString)
-    }
+    var rString = document.getElementById("r").innerHTML
+    rString = parseInt(rString.slice(5)).toString(16)
+    var gString = document.getElementById("g").innerHTML
+    gString = parseInt(gString.slice(7)).toString(16)
+    var bString = document.getElementById("b").innerHTML
+    bString = parseInt(bString.slice(6)).toString(16)
+
     // set background color
     var hexString = "#".concat(rString.concat(gString.concat(bString)));
     document.body.style.backgroundColor = hexString;
-    
-    // if needed, brighten text color to see it
-    if ((r < 150) && (g < 115) && (b < 150)) {
-        document.getElementById("error").innerHTML = hexString;
-        document.getElementById("color").style.color = "#e4e4e4";
-    }
-    else {
-        document.getElementById("color").style.color = "#000000";
-    }
 
-    // debug 
-    document.getElementById("error").innerHTML = hexString;
+    // send to flask application
+    ws.send(hexString)
 }
 
 function setHex(hexString) {
@@ -77,21 +69,7 @@ function setHex(hexString) {
         document.getElementById("error").innerHTML = hexString;    
 }
 
-// function toggleSliders() {
-//     var x = document.getElementById("sliders");
-//     if (x.style.display === "none") {
-//       x.style.display = "block";
-//     } else {
-//       x.style.display = "none";
-//     }
-//     var x = document.getElementById("fantoggleswitches");
-//     if (x.style.display === "none") {
-//         x.style.display = "block";
-//       } else {
-//         x.style.display = "none";
-//     }
-//   } 
-
+// allow for tabs
 function openPage(evt, tabName) {
     // Declare all variables
     var i, tabcontent, tablinks;

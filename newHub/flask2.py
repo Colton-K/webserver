@@ -6,6 +6,7 @@ from time import sleep
 import socket
 import requests
 import datetime
+#  import websocketServer
 
 from smartFan import smartFan
 from rgbStrip import rgbStrip
@@ -14,6 +15,7 @@ from lightswitch import lightswitch
 from smartThermostat import smartThermostat
 
 app = Flask(__name__)
+socketPort = 8996
 
 lightswitchIPs = ['192.168.11.11']
 fanIPs = ['192.168.11.5','192.168.11.6', '192.168.11.7']
@@ -108,12 +110,14 @@ def index():
             "light3OffButtonBackgroundColor" : lightOffColors[2],
             "numSwitches" : len(lightswitches),
             "ls1OnBgColor" : lightswitchOnColors[0],
-            "ls1OffBgColor" : lightswitchOffColors[0], \
+            "ls1OffBgColor" : lightswitchOffColors[0],
             "ls2OnBgColor" : lightswitchOnColors[1], 
-            "ls2OffBgColor" : lightswitchOffColors[1], \
+            "ls2OffBgColor" : lightswitchOffColors[1],
             "currentTemp" : thermostat.getTemp(), 
             "currentThreshold" : thermostat.getThreshold(), 
-            "targetTemp" : thermostat.getTargetTemp()
+            "targetTemp" : thermostat.getTargetTemp(),
+            "socketHostname" : getIP(),
+            "socketPort" : socketPort
             }
 
     return render_template(base, **values)
@@ -136,6 +140,11 @@ def logout():
 """
     RGB SUBSYSTEM
 """
+def setRGB(hexString):
+    r,g,b = rgbStrip1.hextoRGB(hexString)
+    rgbStrip1.setRGB(r,g,b)
+
+
 @app.route("/sliders", methods=["POST"])
 def sliders():
     # Get slider Values
@@ -454,10 +463,35 @@ def automation():
 
 
 """
+    Socket
+"""
+import asyncio
+import websockets
+import threading 
+
+async def rgbStrip(websocket, path):
+    async for message in websocket:
+        setRGB(message)
+        
+        await websocket.send(message)
+
+def runSocket():
+    _loop = asyncio.new_event_loop()
+    asyncio.set_event_loop(_loop)
+
+    print(f"Starting websocket server on wss://{getIP()}:{socketPort}/")
+    start_server = websockets.serve(rgbStrip, getIP(), socketPort)
+
+    _loop.run_until_complete(start_server)
+    _loop.run_forever()
+
+threading.Thread(target=runSocket).start()
+
+"""
     Runs app
 """
 if __name__ == "__main__":
     app.secret_key = os.urandom(12)
     
-    # on pi
     app.run(host=getIP(), port=80)
+
