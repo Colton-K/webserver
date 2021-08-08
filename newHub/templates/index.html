@@ -93,6 +93,9 @@
             .ls2OffBgColor {
                 background-color: {{ ls2OffBgColor }};
             }
+            .syncButton {
+                background-color: {{ syncButtonColor }}
+            }
 
         </style>
     </head>
@@ -100,6 +103,8 @@
         <!-- hostname and port info for sockets -->
         <p id="hostname" hidden>{{ socketHostname }}</p>
         <p id="port" hidden>{{ socketPort }}</p>
+        <p id="onColor" hidden>{{ onColor }}</p>
+        <p id="offColor" hidden>{{ offColor }}</p>
         <!-- Content -->
         <div class="cover-container mx-auto border rounded-3 m-3 p-3" style="background-color: #ffffff">
             <!-- main tab -->
@@ -203,51 +208,37 @@
                     </div>
                     <div class="row p-0">
                         <div class="col p-1">
-                            <form action="button" method="POST">
-                                <div class="d-grid gap-2">
-                                    <button class="btn green" onclick="setHex('#00ff00')" type="submit" name="button" value="#00ff00">Green</button>
-                                </div>
-                            </form>
+                            <div class="d-grid gap-2">
+                                <button class="btn green" onclick="setHex('#00ff00')" type="button" name="button" value="#00ff00">Green</button>
+                            </div>
                         </div>
                         <div class="col p-1">
-                            <form action="button" method="POST">
-                                <div class="d-grid gap-2">
-                                    <button class="btn blue" onclick="setHex('#64b5ff')" type="submit" name="button" value="#64b5ff">Blue</button>
-                                </div>
-                            </form>
+                            <div class="d-grid gap-2">
+                                <button class="btn blue" onclick="setHex('#64b5ff')" type="button" name="button" value="#64b5ff">Blue</button>
+                            </div>
                         </div>
                         <div class="col p-1">
-                            <form action="button" method="POST">
-                                <div class="d-grid gap-2">
-                                    <button class="btn red" onclick="setHex('#ff0000')" type="submit" name="button" value="#ff0000">Red</button>
-                                </div>
-                            </form>
+                            <div class="d-grid gap-2">
+                                <button class="btn red" onclick="setHex('#ff0000')" type="button" name="button" value="#ff0000">Red</button>
+                            </div>
                         </div>
-                        <form action="button" method="POST">
-                        </form>
                     </div>
 
                     <div class="row p-1">
                         <div class="col p-1">
-                            <form action="button" method="POST">
-                                <div class="d-grid gap-2">
-                                    <button class="btn purple" onclick="setHex('#8b54ff')" type="submit" name="button" value="#8b54ff">Purple</button>
-                                </div>
-                            </form>
+                            <div class="d-grid gap-2">
+                                <button class="btn purple" onclick="setHex('#8b54ff')" type="button" name="button" value="#8b54ff">Purple</button>
+                            </div>
                         </div>
                         <div class="col p-1">
-                            <form action="button" method="POST">
-                                <div class="d-grid gap-2">
-                                    <button class="btn white" onclick="setHex('#ffffff')" type="submit" name="button" value="#ffffff">White</button>
-                                </div>
-                            </form>
+                            <div class="d-grid gap-2">
+                                <button class="btn white" onclick="setHex('#ffffff')" type="button" name="button" value="#ffffff">White</button>
+                            </div>
                         </div>
                         <div class="col p-1">
-                            <form action="button" method="POST">
-                                <div class="d-grid gap-2">
-                                    <button class="btn orange" onclick="setHex('#ffa500')" type="submit" name="button" value="#ffa500">Orange</button>
-                                </div>
-                            </form>
+                            <div class="d-grid gap-2">
+                                <button class="btn orange" onclick="setHex('#ffa500')" type="button" name="button" value="#ffa500">Orange</button>
+                            </div>
                         </div>
                         <form action="button" method="POST">
                         </form>
@@ -257,32 +248,24 @@
                     </div>
                     <div class="row">
                         <div class="col p-1">
-                            <form action="brightness" method="POST">
-                                <div class="d-grid gap-2">
-                                    <button class="btn brightnessButton1" onclick="setBrightness(this.value)" type="submit" name="brightness" value="0">0%</button>
-                                </div>
-                            </form>    
+                            <div class="d-grid gap-2">
+                                <button class="btn brightnessButton1" id="brightnessButton1" onclick="setBrightness(this.value)" type="button" name="brightness" value="0">0%</button>
+                            </div>
                         </div>
                         <div class="col p-1">
-                            <form action="brightness" method="POST">
-                                <div class="d-grid gap-2">
-                                    <button class="btn brightnessButton2" onclick="setBrightness(this.value)" type="submit" name="brightness" value="77">30%</button>
-                                </div>
-                            </form>    
+                            <div class="d-grid gap-2">
+                                <button class="btn brightnessButton2" id="brightnessButton2" onclick="setBrightness(this.value)" type="button" name="brightness" value="77">30%</button>
+                            </div>
                         </div>
                         <div class="col p-1">
-                            <form action="brightness" method="POST">
-                                <div class="d-grid gap-2">
-                                    <button class="btn brightnessButton3" onclick="setBrightness(this.value)" type="submit" name="brightness" value="153">60%</button>
-                                </div>
-                            </form>    
+                            <div class="d-grid gap-2">
+                                <button class="btn brightnessButton3" id="brightnessButton3" onclick="setBrightness(this.value)" type="button" name="brightness" value="153">60%</button>
+                            </div>
                         </div>
                         <div class="col p-1">
-                            <form action="brightness" method="POST">
-                                <div class="d-grid gap-2">
-                                    <button class="btn brightnessButton4" onclick="setBrightness(this.value)" type="submit" name="brightness" value="255">100%</button>
-                                </div>
-                            </form>    
+                            <div class="d-grid gap-2">
+                                <button class="btn brightnessButton4" id="brightnessButton4" onclick="setBrightness(this.value)" type="button" name="brightness" value="255">100%</button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -439,9 +422,9 @@
                 </div>
                 <div class="row">
                     <div class="col m-2">
-                        <form action="tvColor" method="POST">
+                        <form action="toggleSync" method="POST">
                             <div class="d-grid gap-2">
-                                <input class="btn btn-light" type="SUBMIT" name="sync" value="Sync Lights">
+                                <input class="btn btn-light syncButton" type="SUBMIT" name="sync" value="Sync Lights">
                             </div>
                         </form>
                     </div>

@@ -51,6 +51,11 @@ class rgbStrip:
         
         self.gammaCorrecting = gammaCorrecting
 
+    def getOnColor(self):
+        return self.onColor
+
+    def getOffColor(self):
+        return self.offColor
 
 
     def RGBtoHex(self, r, g, b):

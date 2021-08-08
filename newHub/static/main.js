@@ -4,6 +4,9 @@ console.log(`connecting to ws://${hostname}:${port}/`)
 var ws = new WebSocket(`ws://${hostname}:${port}/`, 'rgbStrip');
 console.log(ws)
 
+var onColor = document.getElementById("onColor").innerHTML
+var offColor = document.getElementById("offColor").innerHTML
+
 function setRed(val) {
     document.getElementById("r").innerHTML = "Red: ".concat(val);
     // r = + val;
@@ -24,7 +27,33 @@ function setBlue(val) {
 
 function setBrightness(val) {
     document.getElementById("brightness").innerHTML = "Brightness: ".concat(val);
-    // console.log(val)
+    
+    val = parseInt(val)
+    if (val == 0) {
+        document.getElementById("brightnessButton1").style.background = onColor
+        document.getElementById("brightnessButton2").style.background = offColor
+        document.getElementById("brightnessButton3").style.background = offColor
+        document.getElementById("brightnessButton4").style.background = offColor
+    }
+    else if (val > 0 && val <= 150 ) {
+        document.getElementById("brightnessButton1").style.background = offColor
+        document.getElementById("brightnessButton2").style.background = onColor
+        document.getElementById("brightnessButton3").style.background = offColor
+        document.getElementById("brightnessButton4").style.background = offColor
+    }
+    else if (val > 150 && val < 255) {
+        document.getElementById("brightnessButton1").style.background = offColor
+        document.getElementById("brightnessButton2").style.background = offColor
+        document.getElementById("brightnessButton3").style.background = onColor
+        document.getElementById("brightnessButton4").style.background = offColor
+    }
+    else if (val == 255) {
+        document.getElementById("brightnessButton1").style.background = offColor
+        document.getElementById("brightnessButton2").style.background = offColor
+        document.getElementById("brightnessButton3").style.background = offColor
+        document.getElementById("brightnessButton4").style.background = onColor
+    }
+
     ws.send(`brightness|${val}`)
 }
 
@@ -57,18 +86,7 @@ function setHex(hexString) {
 
         // set background color
         document.body.style.backgroundColor = hexString;
-        
-        // if needed, brighten text color to see it
-        if ((r < 150) && (g < 115) && (b < 150)) {
-            document.getElementById("error").innerHTML = hexString;
-            document.getElementById("color").style.color = "#e4e4e4";
-        }
-        else {
-            document.getElementById("color").style.color = "#000000";
-        }
-    
-        // debug 
-        document.getElementById("error").innerHTML = hexString;    
+        ws.send(`rgb|${hexString}`)
 }
 
 // allow for tabs

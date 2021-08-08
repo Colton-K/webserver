@@ -13,6 +13,7 @@ from rgbStrip import rgbStrip
 from smartLight import smartLight
 from lightswitch import lightswitch
 from smartThermostat import smartThermostat
+from tvLight import tvLight
 
 app = Flask(__name__)
 socketPort = 7999
@@ -22,6 +23,8 @@ fanIPs = ['192.168.11.5','192.168.11.6', '192.168.11.7']
 lightIPs = [] #['192.168.11.7'] 
 rgbStripIP = '192.168.11.10'
 thermostatIP = '192.168.11.13'
+tvpiIP, tvpiPort = 'tvpi', 5000
+
 
 # initialize fans
 smartFans = []
@@ -43,6 +46,9 @@ for lightswitchIP in lightswitchIPs:
 
 # init thermostat
 thermostat = smartThermostat(thermostatIP)
+
+# init tvLight
+tvpi = tvLight(tvpiIP, tvpiPort, syncEnabled=False)
 
 # files
 base = 'index.html'
@@ -117,7 +123,10 @@ def index():
             "currentThreshold" : thermostat.getThreshold(), 
             "targetTemp" : thermostat.getTargetTemp(),
             "socketHostname" : getIP(),
-            "socketPort" : socketPort
+            "socketPort" : socketPort,
+            "onColor" : rgbStrip1.onColor,
+            "offColor" : rgbStrip1.offColor,
+            "syncButtonColor" : tvpi.getSyncButtonColor(),
             }
 
     return render_template(base, **values)
@@ -144,8 +153,15 @@ def setRGB(hexString):
     r,g,b = rgbStrip1.hextoRGB(hexString)
     rgbStrip1.setRGB(r,g,b)
 
+    if tvpi.syncIsEnabled:
+        tvpi.setRGB(r,g,b)
+    
+
 def setBrightness(level):
     rgbStrip1.setBrightness(int(level))
+
+    if tvpi.syncIsEnabled():
+        tvpi.setBrightness(level)
 
 @app.route("/sliders", methods=["POST"])
 def sliders():
@@ -414,36 +430,23 @@ def tvLights():
     status = request.form["lights"]
     #  print("received:",status)
     
-    req = requests.get('http://{}:5000/{}'.format("tvpi", status))
+    tvpi.setLightStatus(status)
+    #  req = requests.get('http://{}:5000/{}'.format("tvpi", status))
 
     return index()
 
 @app.route("/restartTv", methods=["POST"])
 def restartTv():
-    # restarts server - could restart whole pi in future
-    #  req = requests.get('http://{}:5000/{}'.format("tvpi", "off"))
-    #  req = requests.get('http://{}:5000/{}'.format("tvpi", "on"))
-
     # restarts whole pi
-    req = requests.get(f'http://tvpi:5000/restart')
+    #  req = requests.get(f'http://tvpi:5000/restart')
+
+    tvpi.restart()
 
     return index()
 
-@app.route("/tvColor", methods=["POST"])
+@app.route("/toggleSync", methods=["POST"])
 def tvColor():
-    status = request.form["sync"]
-
-    if status == "off":
-        req = requests.get("http://tvpi:5000/color?r=0&g=0&b=0")
-    else:
-        brightness = rgbStrip1.getBrightness()
-        r = int(rgbStrip1.getR() * brightness / 255.0)
-        g = int(rgbStrip1.getG() * brightness / 255.0)
-        b = int(rgbStrip1.getB() * brightness / 255.0)
-
-
-        print("rgbStrip settings:",brightness, r,g,b)
-        req = requests.get(f"http://tvpi:5000/color?r={r}&g={g}&b={b}")
+    tvpi.toggleSync()
 
     return index()
 
