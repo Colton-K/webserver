@@ -6,7 +6,9 @@ from time import sleep
 import socket
 import requests
 import datetime
-#  import websocketServer
+import asyncio
+import websockets
+import threading 
 
 from smartFan import smartFan
 from rgbStrip import rgbStrip
@@ -152,12 +154,20 @@ def logout():
 def setRGB(hexString):
     r,g,b = rgbStrip1.hextoRGB(hexString)
     rgbStrip1.setRGB(r,g,b)
+    #  rgbT1 = threading.Thread(target=rgbStrip1.setRGB, args=(r,g,b))
+    #  rgbT1.start()
 
     if tvpi.syncIsEnabled:
         tvpi.setRGB(r,g,b)
+        #  rgbT2 = threading.Thread(target=tvpi.setRGB, args=(r,g,b))
+        #  rgbT2.start()
+        #  rgbT2.join()
+
+    #  rgbT1.join()
     
 
 def setBrightness(level):
+    # maybe thread this?
     rgbStrip1.setBrightness(int(level))
 
     if tvpi.syncIsEnabled():
@@ -470,10 +480,6 @@ def automation():
 """
     Socket
 """
-import asyncio
-import websockets
-import threading 
-
 async def rgbStrip(websocket, path):
     async for message in websocket:
         m = message.split("|")
