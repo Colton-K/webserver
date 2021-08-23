@@ -44,7 +44,7 @@ for lightIP in lightIPs:
 # init lightswitches for old fashioned lights
 lightswitches = []
 for lightswitchIP in lightswitchIPs:
-    lightswitches.append(lightswitch(lightswitchIP, inverted=True))
+    lightswitches.append(lightswitch(lightswitchIP, inverted=False))
 
 # init thermostat
 thermostat = smartThermostat(thermostatIP)
@@ -157,8 +157,8 @@ def setRGB(hexString):
     #  rgbT1 = threading.Thread(target=rgbStrip1.setRGB, args=(r,g,b))
     #  rgbT1.start()
 
-    if tvpi.syncIsEnabled:
-        tvpi.setRGB(r,g,b)
+ #   if tvpi.syncIsEnabled:
+  #      tvpi.setRGB(r,g,b)
         #  rgbT2 = threading.Thread(target=tvpi.setRGB, args=(r,g,b))
         #  rgbT2.start()
         #  rgbT2.join()
@@ -170,8 +170,8 @@ def setBrightness(level):
     # maybe thread this?
     rgbStrip1.setBrightness(int(level))
 
-    if tvpi.syncIsEnabled():
-        tvpi.setBrightness(level)
+ #   if tvpi.syncIsEnabled():
+ #       tvpi.setBrightness(level)
 
 @app.route("/sliders", methods=["POST"])
 def sliders():
