@@ -1,5 +1,10 @@
 import requests
 
+import asyncio
+import datetime
+import random
+import websockets
+
 gammaCorrection = [
     0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
     0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  1,  1,  1,  1,
@@ -33,8 +38,11 @@ effectsDict = {
 }
 
 class rgbStrip:
-    def __init__(self, ip, onColor='#ffffff', gammaCorrecting=True, offColor='#dcdcdc', errorColor='#ff4210'):
+    def __init__(self, ip, onColor='#ffffff', gammaCorrecting=True, offColor='#dcdcdc', errorColor='#ff4210', socketHost=('localhost', 7999)):
         self.ip = ip
+        self.socketIP = socketHost[0]
+        self.socketPort = socketHost[1]
+        print(self.socketIP, self.socketPort)
 
         self.r = 255
         self.g = 255
@@ -83,6 +91,10 @@ class rgbStrip:
         
         return r, g, b
 
+    def setHex(self, hexString):
+        r,g,b = self.hextoRGB(hexString)
+        self.setRGB(r,g,b)
+
     def setRGBB(self, r, g, b, brightness):
         tmpr = int(r * brightness / 255.0)
         tmpg = int(g * brightness / 255.0)
@@ -93,10 +105,10 @@ class rgbStrip:
             tmpg = gammaCorrection[tmpg]
             tmpb = gammaCorrection[tmpb]
 
-        rgbStr = self.RGBtoHex(tmpr, tmpg, tmpb)[1:]
+        #  rgbStr = self.RGBtoHex(tmpr, tmpg, tmpb)[1:] # historic
 
         try:
-            req = requests.get('http://{}/rgb?r={}&g={}&b={}&brightness={}'.format(self.ip,tmpr,tmpg,tmpb,brightness))
+            _ = requests.get('http://{}/rgb?r={}&g={}&b={}&brightness={}'.format(self.ip,tmpr,tmpg,tmpb,brightness))
             # update vars if successful
             self.r = r
             self.g = g
@@ -153,3 +165,32 @@ class rgbStrip:
 
     def getHex(self):
         return self.RGBtoHex(self.r, self.g, self.b)
+
+
+    async def processSocket(self, websocket, path):
+        while websocket.open:
+            message = await websocket.recv()
+            print(f"received: {message}")
+
+            m = message.split("|")
+
+            print(m)
+            if m[0] == "rgb":
+                    self.setHex(m[1])
+            elif m[0] == "brightness":
+                self.setBrightness(int(m[1]))
+
+            #  await websocket.send("hello world")
+            #  await asyncio.sleep(1)
+
+    async def openSocket(self):
+        print(f"Serving on {self.socketIP}:{self.socketPort}")
+        async with websockets.serve(self.processSocket, self.socketIP, self.socketPort):
+            await asyncio.Future()
+
+    #  async def main():
+    #      async with websockets.serve(getSliders, "localhost", 7999):
+    #          await asyncio.Future()
+
+    #  if __name__ == "__main__":
+    #      asyncio.run(main())

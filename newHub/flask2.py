@@ -16,7 +16,7 @@ from smartThermostat import smartThermostat
 from tvLight import tvLight
 
 app = Flask(__name__)
-socketPort = 7999
+socketPort = 7998
 
 lightswitchIPs = ['192.168.11.11']
 fanIPs = ['192.168.11.5','192.168.11.6', '192.168.11.7']
@@ -26,13 +26,26 @@ thermostatIP = '192.168.11.13'
 tvpiIP, tvpiPort = 'tvpi', 5000
 
 
+def getIP():
+    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    try:
+        # doesn't even have to be reachable
+        s.connect(('10.255.255.255', 1))
+        IP = s.getsockname()[0]
+    except:
+        IP = '127.0.0.1'
+    finally:
+        s.close()
+    return IP
+    #  return 'localhost'
+
 # initialize fans
 smartFans = []
 for fanIP in fanIPs:
     smartFans.append(smartFan(fanIP))
 
 # init rgbStrip
-rgbStrip1 = rgbStrip(rgbStripIP)
+rgbStrip1 = rgbStrip(rgbStripIP, socketHost=(getIP(), socketPort))
 
 # initialize smart lights
 smartLights = []
@@ -54,17 +67,6 @@ tvpi = tvLight(tvpiIP, tvpiPort, syncEnabled=False)
 base = 'index.html'
 
 
-def getIP():
-    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-    try:
-        # doesn't even have to be reachable
-        s.connect(('10.255.255.255', 1))
-        IP = s.getsockname()[0]
-    except:
-        IP = '127.0.0.1'
-    finally:
-        s.close()
-    return IP
 
 """
     Display home page
@@ -411,7 +413,7 @@ def setDesiredTemp():
 
 @app.route("/setDesiredThreshold", methods=["POST"])
 def setDesiredThreshold():
-    desiredThreshhold = request.form["threshold"]
+    desiredThreshhold = request.form["t5hreshold"]
     thermostat.setThreshold(desiredThreshhold)
     return index()
 
@@ -467,48 +469,23 @@ def automation():
         print("automation is enabled")
 
 
-"""
-    Socket
-"""
-import asyncio
-import websockets
-import threading 
+async def runSocket():
+    import rgbSocket
 
-async def rgbStrip(websocket, path):
-    async for message in websocket:
-        m = message.split("|")
-        if m[0] == "rgb":
-            setRGB(m[1])
-        elif m[0] == "brightness":
-            setBrightness(m[1])
-        
-        await websocket.send(message)
+    await rgbSocket.main()
 
-#  async def brightness(websocket, path):
-#      async for message in websocket:
-#          setBrightness(message)
 
-#          await websocket.send(message)
-
-def runSocket():
-    _loop = asyncio.new_event_loop()
-    asyncio.set_event_loop(_loop)
-
-    print(f"Starting websocket server on wss://{getIP()}:{socketPort}/")
-    start_server = websockets.serve(rgbStrip, getIP(), socketPort)
-    #  start_brightness_server = websockets.serve(brightness, getIP(), socketPort)
-
-    _loop.run_until_complete(start_server)
-    #  _loop.run_until_complete(start_brightness_server)
-    _loop.run_forever()
-
-threading.Thread(target=runSocket).start()
+#  threading.Thread(target=asyncio.run(rgbStrip1.openSocket())).start()
+threading.Thread(target=asyncio.run,args=[rgbStrip1.openSocket()]).start()
 
 """
     Runs app
 """
 if __name__ == "__main__":
     app.secret_key = os.urandom(12)
-    
-    app.run(host=getIP(), port=80)
+    #  asyncio.run(rgbStrip1.openSocket())
+    #  print(getIP(), socketPort)
 
+    app.run(host=getIP(), port=80)
+    #  app.run()
+    
