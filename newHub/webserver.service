@@ -1,0 +1,14 @@
+[Unit]
+Description=Flask IOT hub service
+StartLimitIntervalSec=0
+
+[Service]
+Type=simple
+Restart=always
+RestartSec=5
+User=root
+WorkingDirectory=/home/colton/work/webserver/newHub
+ExecStart=/usr/bin/env python3 /home/colton/work/webserver/newHub/flask2.py
+
+[Install]
+WantedBy=multi-user.target
