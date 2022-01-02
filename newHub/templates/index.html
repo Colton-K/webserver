@@ -21,82 +21,6 @@
             body {
                 background-color: {{ color }};
             }
-            .brightnessButton1 {
-                background-color: {{ brightnessButton1BackgroundColor }};
-            }
-            .brightnessButton2 {
-                background-color: {{ brightnessButton2BackgroundColor }};
-            }
-            .brightnessButton3 {
-                background-color: {{ brightnessButton3BackgroundColor }};
-            }
-            .brightnessButton4 {
-                background-color: {{ brightnessButton4BackgroundColor }};
-            }
-            .fanOnButton {
-                background-color: {{ fanOnButtonBackgroundColor }};
-            }
-            .fanOffButton {
-                background-color: {{ fanOffButtonBackgroundColor }};
-            }
-            .fan1OnButton {
-                background-color: {{ fan1OnButtonBackgroundColor }};
-            }
-            .fan1OffButton {
-                background-color: {{ fan1OffButtonBackgroundColor }};
-            }
-            .fan2OnButton {
-                background-color: {{ fan2OnButtonBackgroundColor }};
-            }
-            .fan2OffButton {
-                background-color: {{ fan2OffButtonBackgroundColor }};
-            }
-            .fan3OnButton {
-                background-color: {{ fan3OnButtonBackgroundColor }};
-            }
-            .fan3OffButton {
-                background-color: {{ fan3OffButtonBackgroundColor }};
-            }
-            .lightOnButton {
-                background-color: {{ lightOnButtonBackgroundColor }};
-            }
-            .lightOffButton {
-                background-color: {{ lightOffButtonBackgroundColor }};
-            }
-            .light1OnButton {
-                background-color: {{ light1OnButtonBackgroundColor }};
-            }
-            .light1OffButton {
-                background-color: {{ light1OffButtonBackgroundColor }};
-            }
-            .light2OnButton {
-                background-color: {{ light2OnButtonBackgroundColor }};
-            }
-            .light2OffButton {
-                background-color: {{ light2OffButtonBackgroundColor }};
-            }
-            .light3OnButton {
-                background-color: {{ light3OnButtonBackgroundColor }};
-            }
-            .light3OffButton {
-                background-color: {{ light3OffButtonBackgroundColor }};
-            }
-            .ls1OnBgColor {
-                background-color: {{ ls1OnBgColor }};
-            }
-            .ls1OffBgColor {
-                background-color: {{ ls1OffBgColor }};
-            }
-            .ls2OnBgColor {
-                background-color: {{ ls2OnBgColor }};
-            }
-            .ls2OffBgColor {
-                background-color: {{ ls2OffBgColor }};
-            }
-            .syncButton {
-                background-color: {{ syncButtonColor }}
-            }
-
         </style>
     </head>
     <body class="text-center">
@@ -106,337 +30,271 @@
         <p id="onColor" hidden>{{ onColor }}</p>
         <p id="offColor" hidden>{{ offColor }}</p>
         <!-- Content -->
-        <div class="cover-container mx-auto border rounded-3 m-3 p-3" style="background-color: #ffffff">
+        <div class="container mx-auto border rounded-3 m-3 p-3" style="background-color: #ffffff">
             <!-- main tab -->
             <div id="Main" class="tabcontent">
+                <!-- Control all fans -->
+                <div class="card shadow mb-4">
+                    <div class="card-header py-2 d-flex flex-row align-items-center justify-content-between">
+                        <h6 class="m-0 font-weight-bold text-body">All Fans</h6>
+                    </div>
+                    <div class="card-body p-2">
+                        <div class="row">
+                            <div class="col">
+                                <form action="switches" method="POST">
+                                    <div class="d-grid gap-2">
+                                        <button class="btn btn-secondary" type="submit" name="light" value="on">On</button>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="col">
+                                <form action="switches" method="POST">
+                                    <div class="d-grid gap-2">
+                                        <button class="btn btn-secondary" type="submit" name="light" value="off">Off</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div> 
+                    </div>
+                </div>
+
                 <!-- lightswitch -->
-                <div class="container text-center">
-                    <h3>Lighswitch Control</h3>
-                    <div class="row">
-                        <div class="col">
-                            <form action="switches" method="POST">
-                                <div class="d-grid gap-2">
-                                    <button class="btn btn-light" type="submit" name="light" value="on">All On</button>
-                                </div>
-                            </form>
-                        </div>
-                        <div class="col">
-                            <form action="switches" method="POST">
-                                <div class="d-grid gap-2">
-                                    <button class="btn btn-light" type="submit" name="light" value="off">All Off</button>
-                                </div>
-                            </form>
-                        </div>
-                    </div> 
+                {% for ls in lightSwitchInfo %}
+                <div class="card shadow mb-4">
+                    <div class="card-header py-2 d-flex flex-row align-items-center justify-content-between">
+                        <h6 class="m-0 font-weight-bold text-body">{{ ls[0] }}</h6>
+                    </div>
+                    <div class="card-body p-2">
+                        <div class="row">
+                            <div class="col">
+                                <form action="switches" method="POST">
+                                    <div class="d-grid gap-2">
+                                        <button class="btn btn-light" type="submit" name="light" value="on" style="background-color: {{ ls[1] }};">On</button>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="col">
+                                <form action="switches" method="POST">
+                                    <div class="d-grid gap-2">
+                                        <button class="btn btn-light" type="submit" name="light" value="off" style="background-color: {{ ls[2] }};">Off</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div> 
+                    </div>
                 </div>
+                {% endfor %}
+
+                {% for ls in smartLightInfo %}
+                <div class="card shadow mb-4">
+                    <div class="card-header py-2 d-flex flex-row align-items-center justify-content-between">
+                        <h6 class="m-0 font-weight-bold text-body">{{ ls[0] }}</h6>
+                    </div>
+                    <div class="card-body p-2">
+                        <div class="row">
+                            <div class="col">
+                                <form action="switches" method="POST">
+                                    <div class="d-grid gap-2">
+                                        <button class="btn btn-light" type="submit" name="light" value="on" style="background-color: {{ ls[1] }};">On</button>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="col">
+                                <form action="switches" method="POST">
+                                    <div class="d-grid gap-2">
+                                        <button class="btn btn-light" type="submit" name="light" value="off" style="background-color: {{ ls[2] }};">Off</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div> 
+                    </div>
+                </div>
+                {% endfor %}
                 
-                <!-- fan -->
-                <div class="container text-center">
-                    <h3>Fan Control</h3>
-                    <div class="row">
-                        <div class="col">
-                            <form action="fans" method="POST">
-                                <div class="d-grid gap-2">
-                                    <button class="btn btn-light" type="submit" name="fans" value="on">All On</button>
-                                </div>
-                            </form>
-                        </div>
-                        <div class="col">
-                            <form action="fans" method="POST">
-                                <div class="d-grid gap-2">
-                                    <button class="btn btn-light" type="submit" name="fans" value="off">All Off</button>
-                                </div>
-                            </form>
-                        </div>
-                    </div> 
-                    <h4>Individual Fan Control</h4>
-                    <div class="row">
-                        <div class="col">
-                            <form action="fan1" method="POST">
-                                <div class="d-grid gap-2">
-                                    <button class="btn fan1OnButton" type="submit" name="fan" value="on">On</button>
-                                </div>
-                            </form>
-                        </div>
-                        <div class="col">
-                            <form action="fan1" method="POST">
-                                <div class="d-grid gap-2">
-                                    <button class="btn fan1OffButton" type="submit" name="fan" value="off">Off</button>
-                                </div>
-                            </form>
+                {% for fan in fanInfo %}
+                <div class="card shadow mb-4">
+                    <div class="card-header py-2 d-flex flex-row align-items-center justify-content-between">
+                        <h6 class="m-0 font-weight-bold text-body">{{ fan[0] }}</h6>
+                    </div>
+                    <div class="card-body p-2">
+                        <div class="row">
+                            <div class="col">
+                                <form action="switches" method="POST">
+                                    <div class="d-grid gap-2">
+                                        <button class="btn btn-light" type="submit" name="light" value="on" style="background-color: {{ fan[1] }};">On</button>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="col">
+                                <form action="switches" method="POST">
+                                    <div class="d-grid gap-2">
+                                        <button class="btn btn-light" type="submit" name="light" value="off" style="background-color: {{ fan[2] }};">Off</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div> 
+                    </div>
+                </div>
+                {% endfor %}
+
+                
+                {% for rgbStrip in rgbInfo %}
+                <div class="card shadow mb-4">
+                    <div class="card-header py-2 d-flex flex-row align-items-center justify-content-between">
+                        <h6 class="m-0 font-weight-bold text-body">{{ rgbStrip[0] }}</h6>
+                        <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
+                          <input type="radio" class="btn-check" name="btnradio" id="btnbuttons" autocomplete="off" onclick=rgbStripBtnGroup("btnButtons") checked>
+                          <label class="btn btn-outline-secondary  py-0" for="btnbuttons">Buttons</label>
+
+                          <input type="radio" class="btn-check" name="btnradio" id="btnsliders" autocomplete="off" onclick=rgbStripBtnGroup("btnSliders")>
+                          <label class="btn btn-outline-secondary  py-0" for="btnsliders">Sliders</label>
+
+                          <input type="radio" class="btn-check" name="btnradio" id="btneffects" autocomplete="off" onclick=rgbStripBtnGroup("btnEffects")>
+                          <label class="btn btn-outline-secondary  py-0" for="btneffects">Effects</label>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col">
-                            <form action="fan2" method="POST">
+                    <div class="card-body p-1" id="rgbButtons">
+                        <div class="row p-1">
+                            <div class="col p-1">
                                 <div class="d-grid gap-2">
-                                    <button class="btn fan2OnButton" type="submit" name="fan" value="on">On</button>
+                                    <button class="btn green" onclick="setHex('#00ff00')" type="button" name="button" value="#00ff00">Green</button>
                                 </div>
+                            </div>
+                            <div class="col p-1">
+                                <div class="d-grid gap-2">
+                                    <button class="btn blue" onclick="setHex('#64b5ff')" type="button" name="button" value="#64b5ff">Blue</button>
+                                </div>
+                            </div>
+                            <div class="col p-1">
+                                <div class="d-grid gap-2">
+                                    <button class="btn red" onclick="setHex('#ff0000')" type="button" name="button" value="#ff0000">Red</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row p-1">
+                            <div class="col p-1">
+                                <div class="d-grid gap-2">
+                                    <button class="btn purple" onclick="setHex('#8b54ff')" type="button" name="button" value="#8b54ff">Purple</button>
+                                </div>
+                            </div>
+                            <div class="col p-1">
+                                <div class="d-grid gap-2">
+                                    <button class="btn white" onclick="setHex('#ffffff')" type="button" name="button" value="#ffffff">White</button>
+                                </div>
+                            </div>
+                            <div class="col p-1">
+                                <div class="d-grid gap-2">
+                                    <button class="btn orange" onclick="setHex('#ffa500')" type="button" name="button" value="#ffa500">Orange</button>
+                                </div>
+                            </div>
+                            <form action="button" method="POST">
                             </form>
                         </div>
-                        <div class="col">
-                            <form action="fan2" method="POST">
+                        <div class="row">
+                            <div class="col p-1">
                                 <div class="d-grid gap-2">
-                                    <button class="btn fan2OffButton" type="submit" name="fan" value="off">Off</button>
+                                    <button class="btn brightnessButton1" id="brightnessButton1" onclick="setBrightness(this.value)" type="button" name="brightness" value="0">0%</button>
                                 </div>
-                            </form>
+                            </div>
+                            <div class="col p-1">
+                                <div class="d-grid gap-2">
+                                    <button class="btn brightnessButton2" id="brightnessButton2" onclick="setBrightness(this.value)" type="button" name="brightness" value="77">30%</button>
+                                </div>
+                            </div>
+                            <div class="col p-1">
+                                <div class="d-grid gap-2">
+                                    <button class="btn brightnessButton3" id="brightnessButton3" onclick="setBrightness(this.value)" type="button" name="brightness" value="153">60%</button>
+                                </div>
+                            </div>
+                            <div class="col p-1">
+                                <div class="d-grid gap-2">
+                                    <button class="btn brightnessButton4" id="brightnessButton4" onclick="setBrightness(this.value)" type="button" name="brightness" value="255">100%</button>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col">
-                            <form action="fan3" method="POST">
-                                <div class="d-grid gap-2">
-                                    <button class="btn fan3OnButton" type="submit" name="fan" value="on">On</button>
-                                </div>
-                            </form>
+
+                    <div class="card-body p-1" id="rgbSliders">
+                        
+                        <div class="row text-start">
+                            <div class="col-4">
+                                <p id="brightness">Brightness: {{ rgbStrip[5] }}</p>
+                            </div>
+                            <div class="col-8">
+                                <!-- <form method="POST" action="brightness"> -->
+                                    <input type="range" class="form-range" min="0" max="255" value="{{ brightness }}" name="brightness" oninput="setBrightness(this.value)"/>
+                                    <!-- <input type="submit" value="submit" /> -->
+                                <!-- </form> -->
+                            </div>
                         </div>
-                        <div class="col">
-                            <form action="fan3" method="POST">
-                                <div class="d-grid gap-2">
-                                    <button class="btn fan3OffButton" type="submit" name="fan" value="off">Off</button>
-                                </div>
+                        <div class="row text-start">
+                            <div class="col-4">
+                                <p id="r">Red: {{ rgbStrip[2] }}</p>
+                            </div>
+                            <div class="col-8">
+                                <!-- <form method="POST" action="sliders"> -->
+                                    <input type="range" class="form-range" min="0" max="255" value="{{ r }}" name="r" oninput="setRed(this.value)"/>
+                                    <!-- <input type="submit" value="submit" /> -->
+                                <!-- </form> -->
+                            </div>
+                        </div>
+                        <div class="row text-start">
+                            <div class="col-4">
+                                <p id="g">Green: {{ rgbStrip[3] }}</p>
+                            </div>
+                            <div class="col-8">
+                                <!-- <form method="POST" action="sliders"> -->
+                                    <input type="range" class="form-range" min="0" max="255" value="{{ g }}" name="g" oninput="setGreen(this.value)"/>
+                                    <!-- <input type="submit" value="submit" /> -->
+                                <!-- </form> -->
+                            </div>
+                        </div>
+                        <div class="row text-start">
+                            <div class="col-4">
+                                <p id="b">Blue: {{ rgbStrip[4] }}</p>
+                            </div>
+                            <div class="col-8">
+                                <!-- <form method="POST" action="sliders"> -->
+                                    <input type="range" class="form-range" min="0" max="255" value="{{ b }}" name="b" oninput="setBlue(this.value)"/>
+                                    <!-- <input type="submit" value="submit" /> -->
+                                <!-- </form> -->
+                            </div>
+                        </div>
+
+
+                    </div>
+
+                    <div class="card-body p-1" id="rgbEffects">
+                        <div class="row">
+                            <form action="effects" method="POST">
+                                <input type="submit" name="effect" class="btn btn-light" value="fade">
+                                <input type="submit" name="effect" class="btn btn-light" value="rgbFade">
+                                <input type="submit" name="effect" class="btn btn-light" value="strobe">
+                                <input type="submit" name="effect" class="btn btn-light" value="running">
+                                <input type="submit" name="effect" class="btn btn-light" value="colorWipe">
+                                <input type="submit" name="effect" class="btn btn-light" value="rainbowCycle">
+                                <input type="submit" name="effect" class="btn btn-light" value="fire">
+                                <input type="submit" name="effect" class="btn btn-light" value="meteorRain">
+
+                                <input type="submit" name="effect" class="btn btn-light" value="none">
                             </form>
                         </div>
                     </div>
                 </div>
-
-                <!-- led strips -->
-                <div class="container text-center">
-                    <h3>LED Light Strips</h3>
-                    <div class="row">
-                        <p>Colors</p>
-                    </div>
-                    <div class="row p-0">
-                        <div class="col p-1">
-                            <div class="d-grid gap-2">
-                                <button class="btn green" onclick="setHex('#00ff00')" type="button" name="button" value="#00ff00">Green</button>
-                            </div>
-                        </div>
-                        <div class="col p-1">
-                            <div class="d-grid gap-2">
-                                <button class="btn blue" onclick="setHex('#64b5ff')" type="button" name="button" value="#64b5ff">Blue</button>
-                            </div>
-                        </div>
-                        <div class="col p-1">
-                            <div class="d-grid gap-2">
-                                <button class="btn red" onclick="setHex('#ff0000')" type="button" name="button" value="#ff0000">Red</button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="row p-1">
-                        <div class="col p-1">
-                            <div class="d-grid gap-2">
-                                <button class="btn purple" onclick="setHex('#8b54ff')" type="button" name="button" value="#8b54ff">Purple</button>
-                            </div>
-                        </div>
-                        <div class="col p-1">
-                            <div class="d-grid gap-2">
-                                <button class="btn white" onclick="setHex('#ffffff')" type="button" name="button" value="#ffffff">White</button>
-                            </div>
-                        </div>
-                        <div class="col p-1">
-                            <div class="d-grid gap-2">
-                                <button class="btn orange" onclick="setHex('#ffa500')" type="button" name="button" value="#ffa500">Orange</button>
-                            </div>
-                        </div>
-                        <form action="button" method="POST">
-                        </form>
-                    </div>
-                    <div class="row">
-                        <p>Brightness</p>
-                    </div>
-                    <div class="row">
-                        <div class="col p-1">
-                            <div class="d-grid gap-2">
-                                <button class="btn brightnessButton1" id="brightnessButton1" onclick="setBrightness(this.value)" type="button" name="brightness" value="0">0%</button>
-                            </div>
-                        </div>
-                        <div class="col p-1">
-                            <div class="d-grid gap-2">
-                                <button class="btn brightnessButton2" id="brightnessButton2" onclick="setBrightness(this.value)" type="button" name="brightness" value="77">30%</button>
-                            </div>
-                        </div>
-                        <div class="col p-1">
-                            <div class="d-grid gap-2">
-                                <button class="btn brightnessButton3" id="brightnessButton3" onclick="setBrightness(this.value)" type="button" name="brightness" value="153">60%</button>
-                            </div>
-                        </div>
-                        <div class="col p-1">
-                            <div class="d-grid gap-2">
-                                <button class="btn brightnessButton4" id="brightnessButton4" onclick="setBrightness(this.value)" type="button" name="brightness" value="255">100%</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                {% endfor %}
             </div>
 
-            <!-- temp Tab -->
-            <div id="Temp" class="tabcontent">
-                <h3>Temperature Control</h3>
-                <h5>The last temp record is:</h5>
-                <p>{{ currentTemp }}</p>
-                <div class="row">
-                    <h5>Thermostat Status</h5>
-                </div>
-                <div class="row">
-                    <div class="col">
-                        <form action="tempControl", method="POST">
-                            <div class="d-grid gap-2">
-                                <button class="btn btn-light tempControlOnButton" type="submit" name="status" value="on">On</button>
-                            </div>
-                        </form>
-                    </div>
-                    <div class="col">
-                        <form action="tempControl", method="POST">
-                            <div class="d-grid gap-2">
-                                <button class="btn btn-light tempControlOffButton" type="submit" name="status" value="off">Off</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-                <div class="row pt-3">
-                    <form action="setDesiredTemp", method="POST">
-                        <h5>Enter desired temperature, currently set at {{ targetTemp }}</h5>
-                        <input type="number" id="temp" name="temp">
-                        <input type="submit">
-                    </form>
-                </div>
-                <div class="row pt-3">
-                    <h5>The threshold is currently set at {{ currentThreshold }}</h5>
-                    <!-- <p>{{ currentThreshold }}</p> -->
-                </div>
-                <div class="row">
-                    <form action="setDesiredThreshold", method="POST">
-                        <h5>Enter desired threshold:</h5>
-                        <input type="number" id="threshold" name="threshold">
-                        <input type="submit">
-                    </form>
-                </div>
-                <div class="row pt-3">
-                    <h5>Refresh Temperature</h5>
-                    <form action="refreshTemperature", method="POST">
-                        <input type="submit">
-                    </form>
-                </div>
-            </div>
-            
             <!-- settings Tab -->
             <div id="Settings" class="tabcontent">
-                <h3>Settings</h3>
-                <div class="row">
-                    <h5>Special Effects</h5>
-                </div>
-                <div class="row">
-                    <form action="effects" method="POST">
-                        <input type="submit" name="effect" class="btn btn-light" value="fade">
-                        <input type="submit" name="effect" class="btn btn-light" value="rgbFade">
-                        <input type="submit" name="effect" class="btn btn-light" value="strobe">
-                        <input type="submit" name="effect" class="btn btn-light" value="running">
-                        <input type="submit" name="effect" class="btn btn-light" value="colorWipe">
-                        <input type="submit" name="effect" class="btn btn-light" value="rainbowCycle">
-                        <input type="submit" name="effect" class="btn btn-light" value="fire">
-                        <input type="submit" name="effect" class="btn btn-light" value="meteorRain">
 
-                        <input type="submit" name="effect" class="btn btn-light" value="none">
-                    </form>
-                </div>
-                <div class="row">
-                    <h5>Manual Settings</h5>
-                </div>
-                <div class="row text-start">
-                    <div class="col-4">
-                        <p id="brightness">Brightness: {{ brightness }}</p>
-                    </div>
-                    <div class="col-8">
-                        <!-- <form method="POST" action="brightness"> -->
-                            <input type="range" class="form-range" min="0" max="255" value="{{ brightness }}" name="brightness" oninput="setBrightness(this.value)"/>
-                            <!-- <input type="submit" value="submit" /> -->
-                        <!-- </form> -->
-                    </div>
-                </div>
-                <div class="row text-start">
-                    <div class="col-4">
-                        <p id="r">Red: {{ r }}</p>
-                    </div>
-                    <div class="col-8">
-                        <!-- <form method="POST" action="sliders"> -->
-                            <input type="range" class="form-range" min="0" max="255" value="{{ r }}" name="r" oninput="setRed(this.value)"/>
-                            <!-- <input type="submit" value="submit" /> -->
-                        <!-- </form> -->
-                    </div>
-                </div>
-                <div class="row text-start">
-                    <div class="col-4">
-                        <p id="g">Green: {{ g }}</p>
-                    </div>
-                    <div class="col-8">
-                        <!-- <form method="POST" action="sliders"> -->
-                            <input type="range" class="form-range" min="0" max="255" value="{{ g }}" name="g" oninput="setGreen(this.value)"/>
-                            <!-- <input type="submit" value="submit" /> -->
-                        <!-- </form> -->
-                    </div>
-                </div>
-                <div class="row text-start">
-                    <div class="col-4">
-                        <p id="b">Blue: {{ b }}</p>
-                    </div>
-                    <div class="col-8">
-                        <!-- <form method="POST" action="sliders"> -->
-                            <input type="range" class="form-range" min="0" max="255" value="{{ b }}" name="b" oninput="setBlue(this.value)"/>
-                            <!-- <input type="submit" value="submit" /> -->
-                        <!-- </form> -->
-                    </div>
-                </div>
             </div>
 
-            <!-- tv lights tab -->
-            <div id="TvLights" class="tabcontent">
-                <div class="row">
-                    <h3>Status</h3>
-                </div>
-                <div class="row m-2">
-                    <div class="col">
-                        <form action="tvLights" method="POST">
-                            <div class="d-grid gap-2">
-                                <input class="btn btn-light" type="submit" name="lights" value="On">
-                            </div>
-                        </form>
-                    </div>
-                    <div class="col">
-                        <form action="tvLights" method="POST">
-                            <div class="d-grid gap-2">
-                                <input class="btn btn-light" type="submit" name="lights" value="Off">
-                            </div>
-                        </form>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col m-2">
-                        <form action="restartTv" method="post">
-                            <div class="d-grid gap-2">
-                                <input class="btn btn-light" type="SUBMIT" name="restart" value="Restart Lights Server">
-                            </div>
-                        </form>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col m-2">
-                        <form action="toggleSync" method="POST">
-                            <div class="d-grid gap-2">
-                                <input class="btn btn-light syncButton" type="SUBMIT" name="sync" value="Sync Lights">
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
 
         <!--- Tab links -->
             <div class="container pt-3 tab">
                 <button class="btn tablinks" onclick="openPage(event, 'Main')" id="defaultOpen">Main</button>
-                <button class="btn tablinks" onclick="openPage(event, 'Temp')">Temp</button>
                 <button class="btn tablinks" onclick="openPage(event, 'Settings')">Settings</button>
-                <button class="btn tablinks" onclick="openPage(event, 'TvLights')">TvLights</button>
             </div>
 
         </div>
@@ -446,4 +304,5 @@
     <script src="static/main.js"></script>
     <!-- to autoshow the main menu -->
     <script>document.getElementById("defaultOpen").click();</script>
+    <script>document.getElementById("btnbuttons").click();</script>
 </html>

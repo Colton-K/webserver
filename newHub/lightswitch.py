@@ -1,24 +1,27 @@
 import requests
 
 class lightswitch:
-    def __init__(self, ip, inverted=False, selectedBgColor='#ffffff', deselectedBgColor='#dcdcdc', errorColor='#ff4210'):
-        self.ip = ip
-        self.inverted = inverted
+    def __init__(self, ip, name="Lightswitch", inverted=False, selectedBgColor='#ffffff', deselectedBgColor='#dcdcdc', errorColor='#ff4210'):
+        self._ip = ip
+        self._inverted = inverted
+        self._status = "off"
 
-        self.selectedBgColor = selectedBgColor
-        self.deselectedBgColor = deselectedBgColor
-        self.errorColor = errorColor
+        self._name = name
 
-        self.onButtonColor = selectedBgColor
-        self.offButtonColor = deselectedBgColor
+        self._selectedBgColor = selectedBgColor
+        self._deselectedBgColor = deselectedBgColor
+        self._errorColor = errorColor
+
+        self._onButtonColor = selectedBgColor
+        self._offButtonColor = deselectedBgColor
 
     def setIP(self, ipaddr):
-        self.ip = ipaddr
+        self._ip = ipaddr
 
     def setStatus(self, status):
-        self.status = status
+        self._status = status
         
-        if self.inverted:
+        if self._inverted:
             if status == 'on':
                 status = 'off'
             elif status == 'off':
@@ -30,25 +33,32 @@ class lightswitch:
             binStatus = 0
 
         try:
-            print("Sending request:",'http://{}/switch?light={}'.format(self.ip, binStatus))
-            req = requests.get('http://{}/switch?light={}'.format(self.ip, binStatus))
+            print("Sending request:",'http://{}/switch?light={}'.format(self._ip, binStatus))
+            req = requests.get('http://{}/switch?light={}'.format(self._ip, binStatus))
         except:
-            print("Couldn't connect to {}".format(self.ip))
+            print("Couldn't connect to {}".format(self._ip))
 
-            self.onButtonColor = self.errorColor
-            self.offButtonColor = self.errorColor
+            self._onButtonColor = self._errorColor
+            self._offButtonColor = self._errorColor
 
         if status == 'on':
-            self.onButtonColor = self.selectedBgColor
-            self.offButtonColor = self.deselectedBgColor
+            self._onButtonColor = self._selectedBgColor
+            self._offButtonColor = self._deselectedBgColor
         else:
-            self.onButtonColor = self.deselectedBgColor
-            self.offButtonColor = self.selectedBgColor
+            self._onButtonColor = self._deselectedBgColor
+            self._offButtonColor = self._selectedBgColor
 
     def getOnButtonColor(self):
-        return self.onButtonColor
+        return self._onButtonColor
 
     def getOffButtonColor(self):
-        return self.offButtonColor
+        return self._offButtonColor
 
+    def getInfo(self):
+        return [
+                self._name,
+                self._onButtonColor,
+                self._offButtonColor,
+                self._status,
+                ]
 

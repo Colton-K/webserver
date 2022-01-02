@@ -13,8 +13,8 @@ from smartFan import smartFan
 from rgbStrip import rgbStrip
 from smartLight import smartLight
 from lightswitch import lightswitch
-from smartThermostat import smartThermostat
-from tvLight import tvLight
+#  from smartThermostat import smartThermostat
+#  from tvLight import tvLight
 
 app = Flask(__name__)
 socketPort = 7998
@@ -23,8 +23,8 @@ lightswitchIPs = ['192.168.11.11']
 fanIPs = ['192.168.11.5','192.168.11.6', '192.168.11.7']
 lightIPs = [] #['192.168.11.7'] 
 rgbStripIP = '192.168.11.10'
-thermostatIP = '192.168.11.13'
-tvpiIP, tvpiPort = 'tvpi', 5000
+#  thermostatIP = '192.168.11.13'
+#  tvpiIP, tvpiPort = 'tvpi', 5000
 
 
 def getIP():
@@ -42,8 +42,8 @@ def getIP():
 
 # initialize fans
 smartFans = []
-for fanIP in fanIPs:
-    smartFans.append(smartFan(fanIP))
+for i, fanIP in enumerate(fanIPs):
+    smartFans.append(smartFan(fanIP, name=f"smartFan{i}"))
 
 # init rgbStrip
 rgbStrip1 = rgbStrip(rgbStripIP, socketHost=(getIP(), socketPort))
@@ -59,10 +59,10 @@ for lightswitchIP in lightswitchIPs:
     lightswitches.append(lightswitch(lightswitchIP, inverted=True))
 
 # init thermostat
-thermostat = smartThermostat(thermostatIP)
+#  thermostat = smartThermostat(thermostatIP)
 
 # init tvLight
-tvpi = tvLight(tvpiIP, tvpiPort, syncEnabled=False)
+#  tvpi = tvLight(tvpiIP, tvpiPort, syncEnabled=False)
 
 # files
 base = 'index.html'
@@ -74,79 +74,34 @@ base = 'index.html'
 """
 @app.route("/")
 def index():
-    # make sure not getting any out of bounds errors
-    fanOnColors = [""] * 3
-    fanOffColors = [""] * 3
-    for i in range(0, len(smartFans)):
-        fanOnColors[i] = smartFans[i].getOnButtonColor()
-        fanOffColors[i] = smartFans[i].getOffButtonColor()
-    
-    lightOnColors = [""] * 3
-    lightOffColors = [""] * 3
-    for i in range(0, len(smartLights)):
-        lightOnColors[i] = smartLights[i].getOnButtonColor()
-        lightOffColors[i] = smartLights[i].getOffButtonColor()
-
-    lightswitchOnColors = [""] * 2
-    lightswitchOffColors = [""] * 2
-    for i in range(0, len(lightswitches)):
-         lightswitchOnColors[i] = lightswitches[i].getOnButtonColor()    
-
     # things to return in template
     values = {
-            "r" : rgbStrip1.getR(),
-            "g" : rgbStrip1.getG(),
-            "b" : rgbStrip1.getB(),
-            "brightness" : rgbStrip1.getBrightness(),
+            "rgbInfo" : [rgbStrip1.getInfo()],
             "color" : rgbStrip1.getHex(),
-            "brightnessButton1BackgroundColor" : rgbStrip1.getBrightnessButtonColors()[0],
-            "brightnessButton2BackgroundColor" : rgbStrip1.getBrightnessButtonColors()[1],
-            "brightnessButton3BackgroundColor" : rgbStrip1.getBrightnessButtonColors()[2],
-            "brightnessButton4BackgroundColor" : rgbStrip1.getBrightnessButtonColors()[3],
-            "numFans" : len(smartFans),
-            "fan1OnButtonBackgroundColor" : fanOnColors[0],
-            "fan1OffButtonBackgroundColor" : fanOffColors[0],
-            "fan2OnButtonBackgroundColor" : fanOnColors[1],
-            "fan2OffButtonBackgroundColor" : fanOffColors[1],
-            "fan3OnButtonBackgroundColor" : fanOnColors[2],
-            "fan3OffButtonBackgroundColor" : fanOffColors[2],
-            "numLights" : len(smartLights),
-            "light1OnButtonBackgroundColor" : lightOnColors[0], 
-            "light1OffButtonBackgroundColor" : lightOffColors[0],
-            "light2OnButtonBackgroundColor" : lightOnColors[1], 
-            "light2OffButtonBackgroundColor" : lightOffColors[1],
-            "light3OnButtonBackgroundColor" : lightOnColors[2], 
-            "light3OffButtonBackgroundColor" : lightOffColors[2],
-            "numSwitches" : len(lightswitches),
-            "ls1OnBgColor" : lightswitchOnColors[0],
-            "ls1OffBgColor" : lightswitchOffColors[0],
-            "ls2OnBgColor" : lightswitchOnColors[1], 
-            "ls2OffBgColor" : lightswitchOffColors[1],
-            "currentTemp" : thermostat.getTemp(), 
-            "currentThreshold" : thermostat.getThreshold(), 
-            "targetTemp" : thermostat.getTargetTemp(),
+            "oncolor" : rgbStrip1.getOnColor(),
+            "offcolor" : rgbStrip1.getOffColor(),
+            "fanInfo" : [fan.getInfo() for fan in smartFans],
+            "lightSwitchInfo" : [ls.getInfo() for ls in lightswitches],
+            "smartLightInfo" : [ls.getInfo() for ls in smartLights],
             "socketHostname" : getIP(),
             "socketPort" : socketPort,
-            "onColor" : rgbStrip1.onColor,
-            "offColor" : rgbStrip1.offColor,
-            "syncButtonColor" : tvpi.getSyncButtonColor(),
             }
 
     return render_template(base, **values)
     
-@app.route('/login', methods=['POST'])
-def login():
-    if request.form['password'] == password:
-        session['logged_in'] = True
-    else:
-        flash('Wrong password!')
-    return index()
-
-# not included anywhere yet
-@app.route("/logout")
-def logout():
-    session['logged_in'] = False
-    return index()
+#  @app.route('/login', methods=['POST'])
+#  def login():
+#      if request.form['password'] == password:
+#          session['logged_in'] = True
+#      else:
+#          flash('Wrong password!')
+#      return index()
+ 
+#  # not included anywhere yet
+#  @app.route("/logout")
+#  def logout():
+#      session['logged_in'] = False
+#      return index()
 
 
 """
@@ -163,8 +118,8 @@ def setRGB(hexString):
 def setBrightness(level):
     rgbStrip1.setBrightness(int(level))
 
-    if tvpi.syncIsEnabled():
-        tvpi.setBrightness(level)
+    #  if tvpi.syncIsEnabled():
+        #  tvpi.setBrightness(level)
 
 @app.route("/sliders", methods=["POST"])
 def sliders():
@@ -400,74 +355,74 @@ def temp():
 """
     Thermostat
 """
-@app.route("/tempControl", methods=["POST"])
-def tempControl():
-    status = request.form["status"]
-    thermostat.setStatus(status)
-    return index()
+#  @app.route("/tempControl", methods=["POST"])
+#  def tempControl():
+#      status = request.form["status"]
+#      thermostat.setStatus(status)
+#      return index()
 
-@app.route("/setDesiredTemp", methods=["POST"])
-def setDesiredTemp():
-    desiredTemp = request.form["temp"]
-    thermostat.setTemp(desiredTemp)
-    return index()
+#  @app.route("/setDesiredTemp", methods=["POST"])
+#  def setDesiredTemp():
+#      desiredTemp = request.form["temp"]
+#      thermostat.setTemp(desiredTemp)
+#      return index()
 
-@app.route("/setDesiredThreshold", methods=["POST"])
-def setDesiredThreshold():
-    desiredThreshhold = request.form["t5hreshold"]
-    thermostat.setThreshold(desiredThreshhold)
-    return index()
+#  @app.route("/setDesiredThreshold", methods=["POST"])
+#  def setDesiredThreshold():
+#      desiredThreshhold = request.form["t5hreshold"]
+#      thermostat.setThreshold(desiredThreshhold)
+#      return index()
 
-@app.route("/refreshTemperature", methods=["POST"])
-def getCurrentTemp():
-    # will need to change if a voting system is implemented
-    #  manualTemp = thermostat.getTemp()
-    thermostat.refreshTemp()
-    return index()
+#  @app.route("/refreshTemperature", methods=["POST"])
+#  def getCurrentTemp():
+#      # will need to change if a voting system is implemented
+#      #  manualTemp = thermostat.getTemp()
+#      thermostat.refreshTemp()
+#      return index()
 
 """
     TvLights
 """
-@app.route("/tvLights", methods=["POST"])
-def tvLights():
-    status = request.form["lights"]
-    #  print("received:",status)
+#  @app.route("/tvLights", methods=["POST"])
+#  def tvLights():
+#      status = request.form["lights"]
+#      #  print("received:",status)
     
-    tvpi.setLightStatus(status)
-    #  req = requests.get('http://{}:5000/{}'.format("tvpi", status))
+#      tvpi.setLightStatus(status)
+#      #  req = requests.get('http://{}:5000/{}'.format("tvpi", status))
 
-    return index()
+#      return index()
 
-@app.route("/restartTv", methods=["POST"])
-def restartTv():
-    # restarts whole pi
-    #  req = requests.get(f'http://tvpi:5000/restart')
+#  @app.route("/restartTv", methods=["POST"])
+#  def restartTv():
+#      # restarts whole pi
+#      #  req = requests.get(f'http://tvpi:5000/restart')
 
-    tvpi.restart()
+#      tvpi.restart()
 
-    return index()
+#      return index()
 
-@app.route("/toggleSync", methods=["POST"])
-def tvColor():
-    tvpi.toggleSync()
+#  @app.route("/toggleSync", methods=["POST"])
+#  def tvColor():
+#      tvpi.toggleSync()
 
-    return index()
+#      return index()
 
 """
     Automation
 """
-@app.route("/automation", methods=["GET"])
-def automation():
-    acceptableArgs = ["enableAutomation", "treeLight"]
+#  @app.route("/automation", methods=["GET"])
+#  def automation():
+#      acceptableArgs = ["enableAutomation", "treeLight"]
 
-    # get request args and assign to variables
-    for arg in request.args:
-        if arg in acceptableArgs:
-            arg = request.args.get(arg)
+#      # get request args and assign to variables
+#      for arg in request.args:
+#          if arg in acceptableArgs:
+#              arg = request.args.get(arg)
 
-    # make changes if enabled 
-    if enableAutomation:
-        print("automation is enabled")
+#      # make changes if enabled 
+#      if enableAutomation:
+#          print("automation is enabled")
 
 
 async def runSocket():
@@ -487,6 +442,7 @@ if __name__ == "__main__":
     #  asyncio.run(rgbStrip1.openSocket())
     #  print(getIP(), socketPort)
 
-    app.run(host=getIP(), port=80)
+    app.run(host='192.168.1.133', port=80)
+    #  app.run(host=getIP(), port=80)
     #  app.run()
     

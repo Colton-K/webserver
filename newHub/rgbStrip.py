@@ -38,11 +38,13 @@ effectsDict = {
 }
 
 class rgbStrip:
-    def __init__(self, ip, onColor='#ffffff', gammaCorrecting=True, offColor='#dcdcdc', errorColor='#ff4210', socketHost=('localhost', 7999)):
+    def __init__(self, ip, name="rgbStrip", onColor='#ffffff', gammaCorrecting=True, offColor='#dcdcdc', errorColor='#ff4210', socketHost=('localhost', 7999)):
         self.ip = ip
         self.socketIP = socketHost[0]
         self.socketPort = socketHost[1]
         print(self.socketIP, self.socketPort)
+
+        self.name = name
 
         self.r = 255
         self.g = 255
@@ -58,6 +60,17 @@ class rgbStrip:
         self.rgbServerConnected = False
         
         self.gammaCorrecting = gammaCorrecting
+
+    def getInfo(self):
+        return [
+                self.name,
+                self.ip,
+                self.r,
+                self.g,
+                self.b,
+                self.brightness,
+                self.brightnessButtonBgColors,
+                ]
 
     def getOnColor(self):
         return self.onColor

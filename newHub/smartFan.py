@@ -1,9 +1,11 @@
 import os
 
 class smartFan:
-    def __init__(self, ip='', selectedBgColor = '#ffffff', deselectedBgColor = '#dcdcdc', errorColor = '#ff4210'):
+    def __init__(self, ip='', name="Smart Fan", selectedBgColor = '#ffffff', deselectedBgColor = '#dcdcdc', errorColor = '#ff4210'):
         self.status = 'off'
         self.ip = ip
+        self.name = name
+        self.status = 'off'
 
         self.deselectedBgColor = deselectedBgColor
         self.selectedBgColor = selectedBgColor
@@ -46,3 +48,11 @@ class smartFan:
 
     def getOffButtonColor(self):
         return self.offButtonColor
+
+    def getInfo(self):
+        return [
+                self.name,
+                self.onButtonColor,
+                self.offButtonColor,
+                self.status
+                ]

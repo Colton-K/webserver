@@ -5,19 +5,6 @@ const ws = new WebSocket(`ws://${hostname}:${port}/`);
 
 console.log(ws)
 
-// window.addEventListener("DOMContentLoaded", () => {
-//   const messages = document.createElement("ul");
-//  document.body.appendChild(messages);
-
-//  const websocket = new WebSocket("ws://localhost:5678/");
-//  websocket.onmessage = ({ data }) => {
-//     const message = document.createElement("li");
-//     const content = document.createTextNode(data);
-//     message.appendChild(content);
-//     messages.appendChild(message);
-//   };
-// });
-
 var onColor = document.getElementById("onColor").innerHTML
 var offColor = document.getElementById("offColor").innerHTML
 
@@ -101,6 +88,38 @@ function setHex(hexString) {
         // set background color
         document.body.style.backgroundColor = hexString;
         ws.send(`rgb|${hexString}`)
+}
+
+function rgbStripBtnGroup(activeButton) {
+    // console.log(activeButton)
+    rgbButtons = document.getElementById("rgbButtons");
+    rgbSliders = document.getElementById("rgbSliders");
+    rgbEffects = document.getElementById("rgbEffects");
+
+    if (activeButton == "btnButtons") {
+        rgbButtons.style.display = "block";
+        rgbSliders.style.display = "none";
+        rgbEffects.style.display = "none";
+        rgbButtons.style.visibility = "visible";
+        rgbSliders.style.visibility = "hidden";
+        rgbEffects.style.visibility = "hidden";
+    }
+    else if (activeButton == "btnSliders") {
+        rgbButtons.style.display = "none";
+        rgbSliders.style.display = "block";
+        rgbEffects.style.display = "none";
+        rgbButtons.style.visibility = "hidden";
+        rgbSliders.style.visibility = "visible";
+        rgbEffects.style.visibility = "hidden";
+    }
+    else if (activeButton == "btnEffects") {
+        rgbButtons.style.display = "none";
+        rgbSliders.style.display = "none";
+        rgbEffects.style.display = "block";
+        rgbButtons.style.visibility = "hidden";
+        rgbSliders.style.visibility = "hidden";
+        rgbEffects.style.visibility = "visible";
+    }
 }
 
 // allow for tabs
