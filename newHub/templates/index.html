@@ -33,8 +33,10 @@
         <div class="container mx-auto border rounded-3 m-3 p-3" style="background-color: #ffffff">
             <!-- main tab -->
             <div id="Main" class="tabcontent">
+<div class="row">
+        
                 <!-- Control all fans -->
-                <div class="card shadow mb-4">
+                <div class="card shadow mb-4 col-md-6">
                     <div class="card-header py-2 d-flex flex-row align-items-center justify-content-between">
                         <h6 class="m-0 font-weight-bold text-body">All Fans</h6>
                     </div>
@@ -60,7 +62,7 @@
 
                 <!-- lightswitch -->
                 {% for ls in lightSwitchInfo %}
-                <div class="card shadow mb-4">
+                <div class="card shadow mb-4 col-md-6">
                     <div class="card-header py-2 d-flex flex-row align-items-center justify-content-between">
                         <h6 class="m-0 font-weight-bold text-body">{{ ls[0] }}</h6>
                     </div>
@@ -86,7 +88,7 @@
                 {% endfor %}
 
                 {% for ls in smartLightInfo %}
-                <div class="card shadow mb-4">
+                <div class="card shadow mb-4 col-md-6">
                     <div class="card-header py-2 d-flex flex-row align-items-center justify-content-between">
                         <h6 class="m-0 font-weight-bold text-body">{{ ls[0] }}</h6>
                     </div>
@@ -112,7 +114,7 @@
                 {% endfor %}
                 
                 {% for fan in fanInfo %}
-                <div class="card shadow mb-4">
+                <div class="card shadow mb-4 col-md-6">
                     <div class="card-header py-2 d-flex flex-row align-items-center justify-content-between">
                         <h6 class="m-0 font-weight-bold text-body">{{ fan[0] }}</h6>
                     </div>
@@ -139,7 +141,7 @@
 
                 
                 {% for rgbStrip in rgbInfo %}
-                <div class="card shadow mb-4">
+                <div class="card shadow mb-4 col-md-6">
                     <div class="card-header py-2 d-flex flex-row align-items-center justify-content-between">
                         <h6 class="m-0 font-weight-bold text-body">{{ rgbStrip[0] }}</h6>
                         <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
