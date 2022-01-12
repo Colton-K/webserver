@@ -19,13 +19,9 @@ from lightswitch import lightswitch
 app = Flask(__name__)
 socketPort = 7998
 
-lightswitchIPs = ['192.168.11.11']
-fanIPs = ['192.168.11.5','192.168.11.6', '192.168.11.7']
-lightIPs = [] #['192.168.11.7'] 
-rgbStripIP = '192.168.11.10'
-#  thermostatIP = '192.168.11.13'
-#  tvpiIP, tvpiPort = 'tvpi', 5000
-
+#  lightswitchIPs = ['192.168.11.11']
+#  fanIPs = ['192.168.11.5','192.168.11.6', '192.168.11.7']
+#  lightIPs = [] #['192.168.11.7'] 
 
 def getIP():
     s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
@@ -42,21 +38,22 @@ def getIP():
 
 # initialize fans
 smartFans = []
-for i, fanIP in enumerate(fanIPs):
-    smartFans.append(smartFan(fanIP, name=f"smartFan{i}"))
+#  smartFans.append(smartFan(fanIP, name=f"smartFan{i}"))
+
 
 # init rgbStrip
-rgbStrip1 = rgbStrip(rgbStripIP, socketHost=(getIP(), socketPort))
+rgbStrip1 = rgbStrip('192.168.1.243', name="RGB Strip", socketHost=(getIP(), socketPort))
 
-# initialize smart lights
+# initialize smart lights - use tplink smart plugs
 smartLights = []
-for lightIP in lightIPs:
-    smartLights.append(smartLight(lightIP, offon=True))
+#  smartLights.append(smartLight(lightIP, offon=True))
+smartLights.append(smartLight('192.168.1.175', name="String Lights"))
 
-# init lightswitches for old fashioned lights
+
+# init lightswitches for old fashioned lights - use 3d printed mechanism to flip
 lightswitches = []
-for lightswitchIP in lightswitchIPs:
-    lightswitches.append(lightswitch(lightswitchIP, inverted=True))
+#  lightswitches.append(lightswitch(lightswitchIP, inverted=True))
+
 
 # init thermostat
 #  thermostat = smartThermostat(thermostatIP)
@@ -235,6 +232,17 @@ def fan3():
 """
     Light subsystem
 """
+@app.route("/smartLight", methods=["POST"])
+def smartLight():
+    lightname,status = request.form["light"].split(":")
+    print(lightname, status)
+
+    for light in smartLights:
+        if light.name == lightname:
+            light.setStatus(status)
+
+    return index()
+
 @app.route("/lights", methods=["POST"])
 def lights():
     status = request.form["lights"]
@@ -442,7 +450,7 @@ if __name__ == "__main__":
     #  asyncio.run(rgbStrip1.openSocket())
     #  print(getIP(), socketPort)
 
-    app.run(host='192.168.1.133', port=80)
-    #  app.run(host=getIP(), port=80)
+    #  app.run(host='192.168.1.133', port=80)
+    app.run(host=getIP(), port=80)
     #  app.run()
     

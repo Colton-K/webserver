@@ -33,10 +33,9 @@
         <div class="container mx-auto border rounded-3 m-3 p-3" style="background-color: #ffffff">
             <!-- main tab -->
             <div id="Main" class="tabcontent">
-<div class="row">
-        
+                {% if fanInfo|length > 0 %}
                 <!-- Control all fans -->
-                <div class="card shadow mb-4 col-md-6">
+                <div class="card shadow mb-4">
                     <div class="card-header py-2 d-flex flex-row align-items-center justify-content-between">
                         <h6 class="m-0 font-weight-bold text-body">All Fans</h6>
                     </div>
@@ -59,10 +58,11 @@
                         </div> 
                     </div>
                 </div>
+                {% endif %}
 
                 <!-- lightswitch -->
                 {% for ls in lightSwitchInfo %}
-                <div class="card shadow mb-4 col-md-6">
+                <div class="card shadow mb-4">
                     <div class="card-header py-2 d-flex flex-row align-items-center justify-content-between">
                         <h6 class="m-0 font-weight-bold text-body">{{ ls[0] }}</h6>
                     </div>
@@ -88,23 +88,23 @@
                 {% endfor %}
 
                 {% for ls in smartLightInfo %}
-                <div class="card shadow mb-4 col-md-6">
+                <div class="card shadow mb-4">
                     <div class="card-header py-2 d-flex flex-row align-items-center justify-content-between">
                         <h6 class="m-0 font-weight-bold text-body">{{ ls[0] }}</h6>
                     </div>
                     <div class="card-body p-2">
                         <div class="row">
                             <div class="col">
-                                <form action="switches" method="POST">
+                                <form action="smartLight" method="POST">
                                     <div class="d-grid gap-2">
-                                        <button class="btn btn-light" type="submit" name="light" value="on" style="background-color: {{ ls[1] }};">On</button>
+                                        <button class="btn btn-light" type="submit" name="light" value="{{ ls[0] }}:on" style="background-color: {{ ls[1] }};">On</button>
                                     </div>
                                 </form>
                             </div>
                             <div class="col">
-                                <form action="switches" method="POST">
+                                <form action="smartLight" method="POST">
                                     <div class="d-grid gap-2">
-                                        <button class="btn btn-light" type="submit" name="light" value="off" style="background-color: {{ ls[2] }};">Off</button>
+                                        <button class="btn btn-light" type="submit" name="light" value="{{ ls[0] }}:off" style="background-color: {{ ls[2] }};">Off</button>
                                     </div>
                                 </form>
                             </div>
@@ -114,7 +114,7 @@
                 {% endfor %}
                 
                 {% for fan in fanInfo %}
-                <div class="card shadow mb-4 col-md-6">
+                <div class="card shadow mb-4">
                     <div class="card-header py-2 d-flex flex-row align-items-center justify-content-between">
                         <h6 class="m-0 font-weight-bold text-body">{{ fan[0] }}</h6>
                     </div>
@@ -141,7 +141,7 @@
 
                 
                 {% for rgbStrip in rgbInfo %}
-                <div class="card shadow mb-4 col-md-6">
+                <div class="card shadow mb-4">
                     <div class="card-header py-2 d-flex flex-row align-items-center justify-content-between">
                         <h6 class="m-0 font-weight-bold text-body">{{ rgbStrip[0] }}</h6>
                         <div class="btn-group" role="group" aria-label="Basic radio toggle button group">

@@ -2,10 +2,11 @@ import os
 import time
 
 class smartLight:
-    def __init__(self, ip='', offon=False, selectedBgColor = '#ffffff', deselectedBgColor = '#dcdcdc', errorColor = '#ff4210'):
+    def __init__(self, ip='', name="smartLight", offon=False, selectedBgColor = '#ffffff', deselectedBgColor = '#dcdcdc', errorColor = '#ff4210'):
         self.status = 'off'
         self.ip = ip
         self.offon = offon
+        self.name = name
 
         self.deselectedBgColor = deselectedBgColor
         self.selectedBgColor = selectedBgColor
@@ -55,3 +56,11 @@ class smartLight:
 
     def getOffButtonColor(self):
         return self.offButtonColor
+
+    def getInfo(self):
+        return [
+                self.name,
+                self.onButtonColor,
+                self.offButtonColor,
+                self.status,
+                ]
