@@ -171,71 +171,13 @@ def fans():
 
     return index()
     
-@app.route("/fan1toggle", methods=["GET", "POST"])
-def fan1toggle():
-    smartFans[0].invertStatus()
-
-    return index()
-
-@app.route("/fan2toggle", methods=["POST"])
-def fan2toggle():
-    smartFans[1].invertStatus()
-
-    return index()
-
-@app.route("/fan3toggle", methods=["POST"])
-def fan3toggle():
-    smartFans[2].invertStatus()
-
-    return index()
-
-# bottom on/off switches
-@app.route("/fan1", methods=["GET", "POST"])
-def fan1():
-    # get status
-    if request.method == 'POST':
-        status = request.form["fan"]
-    else:
-        status = request.args.get("fan")
-    
-    # update fan
-    smartFans[0].setStatus(status)
-    
-    return index()
-
-@app.route("/fan2", methods=["GET", "POST"])
-def fan2():
-    # get status
-    if request.method == 'POST':
-        status = request.form["fan"]
-    else:
-        status = request.args.get("fan")
-    
-    # update fan
-    smartFans[1].setStatus(status)
-   
-    return index()
-
-@app.route("/fan3", methods=["GET", "POST"])
-def fan3():
-    # get status
-    if request.method == 'POST':
-        status = request.form["fan"]
-    else:
-        status = request.args.get("fan")
-    
-    # update fan
-    smartFans[2].setStatus(status)
-    
-    return index()
-
 """
     Light subsystem
 """
 @app.route("/smartLight", methods=["POST"])
-def smartLight():
+def smartLightControl():
     lightname,status = request.form["light"].split(":")
-    print(lightname, status)
+    #  print(lightname, status)
 
     for light in smartLights:
         if light.name == lightname:
@@ -253,98 +195,28 @@ def lights():
 
     return index()
     
-@app.route("/light1toggle", methods=["GET", "POST"])
-def light1toggle():
-    smartLights[0].invertStatus()
+@app.route("/smartFan", methods=["POST"])
+def smartFanControl():
+    fanName,status = request.form["fan"].split(":")
+
+    for fan in smartFans:
+        if fan.name == fanName:
+            fan.setStatus(status)
 
     return index()
 
-@app.route("/light2toggle", methods=["POST"])
-def light2toggle():
-    smartLights[1].invertStatus()
-
-    return index()
-
-@app.route("/light3toggle", methods=["POST"])
-def light3toggle():
-    smartFans[2].invertStatus()
-
-    return index()
-
-# bottom on/off switches
-@app.route("/light1", methods=["GET", "POST"])
-def light1():
+@app.route("/lightSwitch", methods=["GET", "POST"])
+def lightSwitchControl():
     # get status
     if request.method == 'POST':
-        status = request.form["light"]
+        status = request.form["status"]
     else:
-        status = request.args.get("light")
+        status = request.args.get("status")
     
-    # update light
-    smartLights[0].setStatus(status)
-    
-    return index()
-
-@app.route("/light2", methods=["GET", "POST"])
-def light2():
-    # get status
-    if request.method == 'POST':
-        status = request.form["light"]
-    else:
-        status = request.args.get("light")
-    
-    # update light
-    smartLights[1].setStatus(status)
-   
-    return index()
-
-@app.route("/light3", methods=["GET", "POST"])
-def light3():
-    # get status
-    if request.method == 'POST':
-        status = request.form["light"]
-    else:
-        status = request.args.get("light")
-    
-    # update light
-    smartLights[2].setStatus(status)
-    
-    return index()
-
-@app.route("/switches", methods=["GET", "POST"])
-def switches():
-    # get status
-    if request.method == 'POST':
-        status = request.form["light"]
-    else:
-        status = request.args.get("light")
-    
-    print(status)
-
-    for switch in lightswitches:
-        switch.setStatus(status)
+    for light in lightswitches:
+        light.setStatus(status)
 
     return index()
-
-@app.route("/switch1", methods=["GET", "POST"])
-def switch1():
-    # get status
-    if request.method == 'POST':
-        status = request.form["light"]
-    else:
-        status = request.args.get("light")
-    
-    lightswitches[0].setStatus(status)
-
-@app.route("/switch2", methods=["GET", "POST"])
-def switch2():
-    # get status
-    if request.method == 'POST':
-        status = request.form["light"]
-    else:
-        status = request.args.get("light")
-    
-    lightswitches[1].setStatus(status)
 
 """
     Record temperature
